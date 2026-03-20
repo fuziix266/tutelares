@@ -3,72 +3,130 @@
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
 ?>
-<?= $this->doctype() ?>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <?= $this->headTitle('Laminas MVC Skeleton')->setSeparator(' - ')->setAutoEscape(false) ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TUTELARES - Portal de noticias regional. Información, radio online y más.">
+    <title>TUTELARES | <?= $this->headTitle() ?: 'Portal de Noticias' ?></title>
 
-        <?= $this->headMeta()
-            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
-            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-        ?>
+    <!-- Google Fonts: Syne + Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        <!-- Styles -->
-        <?= $this->headLink([
-                'rel' => 'shortcut icon',
-                'type' => 'image/vnd.microsoft.icon',
-                'href' => $this->basePath() . '/img/favicon.ico'
-            ])
-            ->prependStylesheet($this->basePath('css/style.css'))
-            ->prependStylesheet($this->basePath('css/bootstrap.min.css')) ?>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-        <!-- Scripts -->
-        <?= $this->headScript() ?>
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-md navbar-dark mb-4" role="navigation">
-            <div class="container">
-                <a class="navbar-brand" href="<?= $this->url('home') ?>">
-                    <img src="<?= $this->basePath('img/laminas-logo.svg') ?>" alt="Laminas">
-                    <span class="navbar-text text-light">MVC Skeleton</span>
-                </a>
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a
-                                class="nav-link active"
-                                aria-current="page"
-                                href="<?= $this->url('home') ?>"
-                            >Home
-                            </a>
-                        </li>
-                    </ul>
+    <!-- CSS Principal -->
+    <link rel="stylesheet" href="<?= $this->basePath('css/tutelares.css') ?>">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header>
+    <nav class="navbar">
+        <a class="navbar-logo" href="<?= $this->url('home') ?>">TUTE<span>LARES</span></a>
+
+        <ul class="navbar-nav">
+            <li><a href="<?= $this->url('home') ?>">Inicio</a></li>
+            <li><a href="<?= $this->url('noticia') ?>">Noticias</a></li>
+            <li><a href="<?= $this->url('categoria') ?>">Categorías</a></li>
+            <li><a href="<?= $this->url('radio') ?>"><i class="bi bi-broadcast"></i> Radio</a></li>
+            <li><a href="<?= $this->url('radio') ?>" class="btn-cta">En Vivo</a></li>
+        </ul>
+
+        <button class="navbar-toggle" id="nav-toggle" aria-label="Menú">&#9776;</button>
+    </nav>
+</header>
+
+<!-- CONTENT -->
+<main>
+    <?= $this->content ?>
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">TUTE<span>LARES</span></div>
+                <p class="footer-desc">Periodismo independiente, veraz y comprometido con la región. Noticias, análisis y radio online las 24 horas.</p>
+                <div class="footer-socials">
+                    <a href="#" class="social-btn"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-btn"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="social-btn"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-btn"><i class="bi bi-tiktok"></i></a>
+                    <a href="#" class="social-btn"><i class="bi bi-youtube"></i></a>
                 </div>
             </div>
-        </nav>
-        <div class="container">
-            <?= $this->content ?>
-            <hr>
-            <footer>
-                <p>
-                    &copy; <?= date('Y') ?>
-                    <a href="https://getlaminas.org/">Laminas Project</a> a Series of LF Projects, LLC.
-                </p>
-            </footer>
+
+            <div>
+                <h4 class="footer-heading">Secciones</h4>
+                <ul class="footer-links">
+                    <li><a href="<?= $this->url('noticia') ?>">Últimas Noticias</a></li>
+                    <li><a href="<?= $this->url('categoria') ?>">Política</a></li>
+                    <li><a href="<?= $this->url('categoria') ?>">Economía</a></li>
+                    <li><a href="<?= $this->url('categoria') ?>">Deportes</a></li>
+                    <li><a href="<?= $this->url('categoria') ?>">Tecnología</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="footer-heading">Tutelares</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Quiénes somos</a></li>
+                    <li><a href="#">Equipo de Redacción</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#">Publicidad</a></li>
+                    <li><a href="#">Política de Privacidad</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 class="footer-heading">Radio Online</h4>
+                <p style="font-size:.9rem;line-height:1.7;margin-bottom:1rem;">Escúchanos en vivo, las 24 horas. Noticias, música y entretenimiento.</p>
+                <a href="<?= $this->url('radio') ?>" class="btn-cta" style="display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.4rem;">
+                    <i class="bi bi-play-circle-fill"></i> Escuchar ahora
+                </a>
+            </div>
         </div>
-        <?= $this->inlineScript()
-            ->prependFile($this->basePath('js/bootstrap.min.js')) ?>
-    </body>
+
+        <div class="footer-bottom">
+            <span>&copy; <?= date('Y') ?> TUTELARES Media Group. Todos los derechos reservados.</span>
+            <span>Desarrollado con Laminas MVC</span>
+        </div>
+    </div>
+</footer>
+
+<!-- DARK MODE TOGGLE -->
+<button id="dark-toggle" title="Modo oscuro"><i class="bi bi-moon-fill"></i></button>
+
+<!-- BACK TO TOP -->
+<button id="back-to-top" title="Volver arriba"><i class="bi bi-arrow-up"></i></button>
+
+<script>
+    // Dark mode
+    const toggle = document.getElementById('dark-toggle');
+    const body   = document.body;
+    if (localStorage.getItem('darkMode') === '1') body.classList.add('dark-mode');
+    toggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', body.classList.contains('dark-mode') ? '1' : '0');
+        toggle.querySelector('i').className = body.classList.contains('dark-mode') ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+    });
+
+    // Back to top
+    const btt = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => btt.classList.toggle('visible', window.scrollY > 400));
+    btt.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Mobile nav
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+        document.querySelector('.navbar-nav').style.display =
+            document.querySelector('.navbar-nav').style.display === 'flex' ? 'none' : 'flex';
+    });
+</script>
+</body>
 </html>

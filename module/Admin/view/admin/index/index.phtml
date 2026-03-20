@@ -1,0 +1,64 @@
+<?php $this->headTitle('Dashboard'); ?>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="bi bi-newspaper"></i></div>
+        <div>
+            <div class="stat-label">Total Noticias</div>
+            <div class="stat-value"><?= count($noticias) ?></div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(40,167,69,0.1);color:#28a745;"><i class="bi bi-eye"></i></div>
+        <div>
+            <div class="stat-label">Publicadas</div>
+            <div class="stat-value"><?= count($noticias) ?></div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(0,123,255,0.1);color:#007bff;"><i class="bi bi-broadcast"></i></div>
+        <div>
+            <div class="stat-label">Radio Online</div>
+            <div class="stat-value">En Vivo</div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2><i class="bi bi-newspaper" style="color:var(--accent);margin-right:.5rem;"></i> Últimas Noticias</h2>
+        <a href="/medio-comunicacion/public/admin/noticia/crear" class="btn btn-primary btn-sm">
+            <i class="bi bi-plus-lg"></i> Nueva Noticia
+        </a>
+    </div>
+    <div class="card-body" style="padding:0;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Título</th><th>Categoría</th><th>Autor</th><th>Fecha</th><th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($noticias as $n): ?>
+                <tr>
+                    <td style="color:#999;font-size:.8rem;">#<?= $n['id'] ?></td>
+                    <td><strong><?= htmlspecialchars($n['titulo']) ?></strong></td>
+                    <td><span class="badge badge-pink"><?= htmlspecialchars($n['categoria']) ?></span></td>
+                    <td><?= htmlspecialchars($n['autor']) ?></td>
+                    <td style="font-size:.8rem;color:#999;"><?= date('d/m/Y', strtotime($n['creado_en'])) ?></td>
+                    <td>
+                        <a href="/medio-comunicacion/public/admin/noticia/editar/<?= $n['id'] ?>" class="btn btn-sm btn-outline">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        &nbsp;
+                        <a href="/medio-comunicacion/public/admin/noticia/eliminar/<?= $n['id'] ?>" class="btn btn-sm btn-danger"
+                           onclick="return confirm('¿Eliminar esta noticia?')">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | TUTELARES Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root { --accent: #FF1C5C; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0f14;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            max-width: 900px;
+            min-height: 540px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+        }
+
+        /* LEFT PANEL */
+        .login-left {
+            background: linear-gradient(135deg, #1a1a2a 0%, #0f0f14 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: -80px; right: -80px;
+            width: 250px; height: 250px;
+            border-radius: 50%;
+            background: rgba(255,28,92,0.12);
+        }
+
+        .login-left::after {
+            content: '';
+            position: absolute;
+            bottom: -60px; left: -60px;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: rgba(255,28,92,0.07);
+        }
+
+        .login-brand {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 2.2rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        .login-brand span { color: var(--accent); }
+
+        .login-tagline {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            max-width: 260px;
+        }
+
+        .login-badge {
+            margin-top: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,28,92,0.15);
+            border: 1px solid rgba(255,28,92,0.3);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            align-self: flex-start;
+        }
+
+        /* RIGHT PANEL */
+        .login-right {
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 3rem;
+        }
+
+        .login-right h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.6rem;
+            margin-bottom: 0.4rem;
+            color: #111;
+        }
+        .login-right p { color: #777; font-size: 0.9rem; margin-bottom: 2rem; }
+
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.4rem; }
+        .input-wrap { position: relative; }
+        .input-icon { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: #aaa; font-size: 1rem; }
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 0.9rem 0.75rem 2.5rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus { outline: none; border-color: var(--accent); }
+
+        .btn-login {
+            width: 100%;
+            padding: 0.85rem;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            margin-top: 0.5rem;
+            transition: background 0.2s, transform 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-login:hover { background: #c9073f; transform: translateY(-1px); }
+
+        .alert-error {
+            background: rgba(220,53,69,0.08);
+            color: #dc3545;
+            border: 1px solid rgba(220,53,69,0.2);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #aaa;
+            font-size: 0.85rem;
+            text-decoration: none;
+        }
+        .back-link:hover { color: var(--accent); }
+
+        @media (max-width: 600px) {
+            .login-wrapper { grid-template-columns: 1fr; }
+            .login-left { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+    <!-- Lado izquierdo decorativo -->
+    <div class="login-left">
+        <div class="login-brand">TUTE<span>LARES</span></div>
+        <p class="login-tagline">Panel de administración de contenido. Gestiona tus noticias, categorías y más.</p>
+        <div class="login-badge">
+            <i class="bi bi-shield-lock-fill"></i> Acceso Seguro
+        </div>
+    </div>
+
+    <!-- Formulario de login -->
+    <div class="login-right">
+        <h2>Bienvenido de vuelta</h2>
+        <p>Ingresa tus credenciales para acceder al panel.</p>
+
+        <?php if (!empty($this->error)): ?>
+        <div class="alert-error">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+            <?= htmlspecialchars($this->error) ?>
+        </div>
+        <?php endif; ?>
+
+        <form method="post" action="">
+            <div class="form-group">
+                <label class="form-label" for="usuario">Usuario</label>
+                <div class="input-wrap">
+                    <i class="bi bi-person input-icon"></i>
+                    <input
+                        type="text"
+                        id="usuario"
+                        name="usuario"
+                        class="form-control"
+                        placeholder="Tu nombre de usuario"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Contraseña</label>
+                <div class="input-wrap">
+                    <i class="bi bi-lock input-icon"></i>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="form-control"
+                        placeholder="Tu contraseña"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login">
+                <i class="bi bi-box-arrow-in-right"></i> Ingresar al Panel
+            </button>
+        </form>
+
+        <a href="/medio-comunicacion/public/" class="back-link">
+            <i class="bi bi-arrow-left"></i> Volver al portal
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

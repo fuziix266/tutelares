@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin | TUTELARES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --accent: #FF1C5C;
+            --sidebar-bg: #0f0f14;
+            --sidebar-width: 240px;
+            --header-h: 56px;
+            --white: #fff;
+            --gray-100: #f5f5f5;
+            --gray-200: #e9ecef;
+            --gray-600: #666;
+            --black: #111;
+            --success: #28a745;
+            --danger: #dc3545;
+            --transition: 0.2s ease;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--gray-100); color: var(--black); display: flex; min-height: 100vh; }
+
+        /* SIDEBAR */
+        .sidebar { width: var(--sidebar-width); background: var(--sidebar-bg); color: #ccc; display: flex; flex-direction: column; position: fixed; inset: 0 auto 0 0; z-index: 100; }
+        .sidebar-brand { padding: 1.5rem 1.5rem 1rem; font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 800; color: var(--white); border-bottom: 1px solid rgba(255,255,255,0.07); text-decoration: none; display: block; }
+        .sidebar-brand span { color: var(--accent); }
+        .sidebar-role { padding: .75rem 1.5rem; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); background: rgba(255,28,92,.08); border-bottom: 1px solid rgba(255,255,255,.05); display: flex; align-items: center; gap: .5rem; }
+        .sidebar-label { padding: 1.25rem 1.5rem 0.4rem; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+        .sidebar-nav { list-style: none; padding: 0.4rem 0; }
+        .sidebar-nav a { display: flex; align-items: center; gap: .75rem; padding: .65rem 1.5rem; color: rgba(255,255,255,.65); text-decoration: none; font-size: .88rem; font-weight: 500; transition: all var(--transition); border-left: 3px solid transparent; }
+        .sidebar-nav a:hover, .sidebar-nav a.active { color: var(--white); background: rgba(255,255,255,.05); border-left-color: var(--accent); }
+        .sidebar-nav a i { font-size: 1rem; width: 20px; text-align: center; }
+        .sidebar-footer { margin-top: auto; padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,.07); }
+        .sidebar-footer a { display: flex; align-items: center; gap: .5rem; color: rgba(255,255,255,.5); font-size: .85rem; text-decoration: none; transition: color var(--transition); }
+        .sidebar-footer a:hover { color: var(--accent); }
+
+        /* MAIN */
+        .main-wrapper { margin-left: var(--sidebar-width); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+        .topbar { height: var(--header-h); background: var(--white); border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; position: sticky; top: 0; z-index: 90; }
+        .topbar-title { font-weight: 700; font-size: 1rem; }
+        .topbar-user { display: flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--gray-600); }
+        .topbar-user .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); color: var(--white); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .75rem; }
+        .content { padding: 2rem; flex: 1; }
+
+        /* CARDS */
+        .card { background: var(--white); border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,.06); overflow: hidden; }
+        .card-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; justify-content: space-between; }
+        .card-header h2 { font-size: 1rem; font-weight: 700; }
+        .card-body { padding: 1.5rem; }
+
+        /* TABLE */
+        .table { width: 100%; border-collapse: collapse; }
+        .table th, .table td { padding: .85rem 1rem; text-align: left; font-size: .9rem; border-bottom: 1px solid var(--gray-200); }
+        .table th { font-size: .75rem; text-transform: uppercase; letter-spacing: .07em; color: var(--gray-600); background: var(--gray-100); }
+        .table tbody tr:hover { background: #fafafa; }
+
+        /* BADGES */
+        .badge { display: inline-flex; align-items: center; padding: .25rem .6rem; border-radius: 20px; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+        .badge-pink  { background: rgba(255,28,92,.12); color: var(--accent); }
+        .badge-green { background: rgba(40,167,69,.1);  color: var(--success); }
+        .badge-gray  { background: var(--gray-200);     color: var(--gray-600); }
+
+        /* BUTTONS */
+        .btn { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem 1rem; border-radius: 6px; font-weight: 600; font-size: .85rem; cursor: pointer; border: none; text-decoration: none; transition: all var(--transition); }
+        .btn-primary   { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: #c9073f; color: #fff; }
+        .btn-sm        { padding: .3rem .7rem; font-size: .78rem; }
+        .btn-outline   { background: transparent; border: 1.5px solid var(--gray-200); color: var(--black); }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-danger    { background: var(--danger); color: #fff; }
+        .btn-danger:hover { background: #b02a37; }
+
+        /* FORMS */
+        .form-group { margin-bottom: 1.25rem; }
+        .form-label { display: block; font-weight: 600; font-size: .85rem; margin-bottom: .4rem; color: var(--black); }
+        .form-control { width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--gray-200); border-radius: 6px; font-size: .9rem; font-family: 'Inter', sans-serif; transition: border-color var(--transition); background: var(--white); }
+        .form-control:focus { outline: none; border-color: var(--accent); }
+        textarea.form-control { min-height: 120px; resize: vertical; }
+        .form-select { width: 100%; padding: .65rem .9rem; border: 1.5px solid var(--gray-200); border-radius: 6px; font-size: .9rem; background: var(--white); cursor: pointer; }
+        .form-select:focus { outline: none; border-color: var(--accent); }
+
+        /* ALERT */
+        .alert { padding: .85rem 1.25rem; border-radius: 6px; font-size: .9rem; margin-bottom: 1.25rem; }
+        .alert-danger { background: rgba(220,53,69,.1); color: var(--danger); border: 1px solid rgba(220,53,69,.2); }
+
+        /* STATS */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+        .stat-card { background: var(--white); border-radius: 8px; padding: 1.25rem; box-shadow: 0 1px 4px rgba(0,0,0,.06); display: flex; align-items: center; gap: 1rem; }
+        .stat-icon { width: 48px; height: 48px; border-radius: 10px; background: rgba(255,28,92,.1); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+        .stat-label { font-size: .75rem; color: var(--gray-600); margin-bottom: .2rem; }
+        .stat-value { font-weight: 800; font-size: 1.4rem; font-family: 'Syne', sans-serif; }
+    </style>
+</head>
+<body>
+<?php
+// Obtener datos de sesión para el sidebar dinámico
+if (session_status() === PHP_SESSION_NONE) session_start();
+$rol     = $_SESSION['admin_role']    ?? 'guest';
+$usuario = $_SESSION['admin_usuario'] ?? 'Administrador';
+$initials = strtoupper(substr($usuario, 0, 2));
+$roleLabels = [
+    'publisher' => ['label' => 'Publisher',     'icon' => 'bi-pencil-square'],
+    'radio'     => ['label' => 'Radio',          'icon' => 'bi-broadcast'],
+    'super'     => ['label' => 'Super Usuario',  'icon' => 'bi-shield-check'],
+];
+$roleInfo = $roleLabels[$rol] ?? ['label' => 'Admin', 'icon' => 'bi-person'];
+?>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <a class="sidebar-brand" href="/medio-comunicacion/public/admin/login">TUTE<span>LARES</span></a>
+
+    <!-- Rol activo -->
+    <div class="sidebar-role">
+        <i class="bi <?= $roleInfo['icon'] ?>"></i>
+        <?= htmlspecialchars($roleInfo['label']) ?>
+    </div>
+
+    <?php if ($rol === 'publisher' || $rol === 'super'): ?>
+    <div class="sidebar-label">Noticias</div>
+    <ul class="sidebar-nav">
+        <li><a href="/medio-comunicacion/public/admin/publisher"><i class="bi bi-newspaper"></i> Mis Noticias</a></li>
+        <li><a href="/medio-comunicacion/public/admin/publisher/crear"><i class="bi bi-plus-square"></i> Nueva Noticia</a></li>
+    </ul>
+    <?php endif; ?>
+
+    <?php if ($rol === 'radio' || $rol === 'super'): ?>
+    <div class="sidebar-label">Radio</div>
+    <ul class="sidebar-nav">
+        <li><a href="/medio-comunicacion/public/admin/radio-panel"><i class="bi bi-broadcast"></i> Programación</a></li>
+    </ul>
+    <?php endif; ?>
+
+    <?php if ($rol === 'super'): ?>
+    <div class="sidebar-label">Administración</div>
+    <ul class="sidebar-nav">
+        <li><a href="/medio-comunicacion/public/admin/super"><i class="bi bi-speedometer2"></i> Dashboard Global</a></li>
+    </ul>
+    <?php endif; ?>
+
+    <div class="sidebar-label">Portal</div>
+    <ul class="sidebar-nav">
+        <li><a href="/medio-comunicacion/public/" target="_blank"><i class="bi bi-globe"></i> Ver Portal</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+        <a href="/medio-comunicacion/public/admin/logout">
+            <i class="bi bi-box-arrow-left"></i> Cerrar Sesión (<?= htmlspecialchars($usuario) ?>)
+        </a>
+    </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main-wrapper">
+    <header class="topbar">
+        <span class="topbar-title"><?= $this->headTitle() ?: 'Panel Admin' ?></span>
+        <div class="topbar-user">
+            <div class="avatar"><?= $initials ?></div>
+            <span><?= htmlspecialchars($usuario) ?></span>
+        </div>
+    </header>
+    <main class="content">
+        <?= $this->content ?>
+    </main>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<?php
+$esEdicion = !empty($this->noticia);
+$n = $this->noticia ?? [];
+$this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
+?>
+
+<div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    <a href="/medio-comunicacion/public/admin/noticia" class="btn btn-outline btn-sm">
+        <i class="bi bi-arrow-left"></i>
+    </a>
+    <h1 style="font-size:1.4rem;font-weight:800;">
+        <?= $esEdicion ? 'Editar Noticia #' . htmlspecialchars($n['id']) : 'Nueva Noticia' ?>
+    </h1>
+</div>
+
+<?php if (!empty($this->error)): ?>
+<div class="alert alert-danger">
+    <i class="bi bi-exclamation-triangle-fill"></i> <?= htmlspecialchars($this->error) ?>
+</div>
+<?php endif; ?>
+
+<form method="post" action="">
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;align-items:start;">
+
+        <!-- Columna principal -->
+        <div style="display:flex;flex-direction:column;gap:1.25rem;">
+            <div class="card">
+                <div class="card-header"><h2>Contenido</h2></div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label" for="titulo">Título *</label>
+                        <input type="text" id="titulo" name="titulo" class="form-control"
+                               placeholder="Escribe el título de la noticia"
+                               value="<?= htmlspecialchars($n['titulo'] ?? '') ?>" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="resumen">Resumen / Bajada</label>
+                        <textarea id="resumen" name="resumen" class="form-control" rows="3"
+                                  placeholder="Resumen breve de la noticia (aparece en las tarjetas)"><?= htmlspecialchars($n['resumen'] ?? '') ?></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="contenido">Contenido</label>
+                        <textarea id="contenido" name="contenido" class="form-control" rows="10"
+                                  placeholder="Contenido completo de la noticia..."><?= htmlspecialchars($n['contenido'] ?? '') ?></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna lateral -->
+        <div style="display:flex;flex-direction:column;gap:1.25rem;">
+            <div class="card">
+                <div class="card-header"><h2>Publicación</h2></div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-label" for="categoria">Categoría</label>
+                        <select id="categoria" name="categoria" class="form-select">
+                            <?php
+                            $cats = ['General', 'Política', 'Economía', 'Deportes', 'Cultura', 'Sociedad', 'Tecnología', 'Internacional', 'Salud'];
+                            foreach ($cats as $cat):
+                                $sel = ($n['categoria'] ?? '') === $cat ? 'selected' : '';
+                            ?>
+                            <option value="<?= $cat ?>" <?= $sel ?>><?= $cat ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="autor">Autor</label>
+                        <input type="text" id="autor" name="autor" class="form-control"
+                               placeholder="Redacción"
+                               value="<?= htmlspecialchars($n['autor'] ?? 'Redacción') ?>">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom:0;">
+                        <button type="submit" class="btn btn-primary" style="width:100%;">
+                            <i class="bi bi-<?= $esEdicion ? 'check-lg' : 'save' ?>"></i>
+                            <?= $esEdicion ? 'Guardar Cambios' : 'Publicar Noticia' ?>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><h2>Imagen Destacada</h2></div>
+                <div class="card-body">
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label class="form-label" for="imagen">URL de Imagen</label>
+                        <input type="url" id="imagen" name="imagen" class="form-control"
+                               placeholder="https://ejemplo.com/imagen.jpg"
+                               value="<?= htmlspecialchars($n['imagen'] ?? '') ?>">
+                        <?php if (!empty($n['imagen'])): ?>
+                        <img src="<?= htmlspecialchars($n['imagen']) ?>" alt="Preview"
+                             style="width:100%;border-radius:6px;margin-top:.75rem;object-fit:cover;max-height:140px;">
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

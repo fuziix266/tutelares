@@ -1,0 +1,53 @@
+<div class="section container" style="text-align:center;max-width:700px;margin:0 auto;">
+    <h2 style="font-family:'Syne',sans-serif;font-size:2.5rem;margin-bottom:1rem;">Radio Tutelares</h2>
+    <p style="color:#666;margin-bottom:2.5rem;font-size:1.1rem;">Música y noticias en vivo para tu región, las 24 horas del día.</p>
+
+    <div style="background:#111;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+        <!-- Simulador de reproductor -->
+        <div style="padding:2.5rem;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);color:white;text-align:center;">
+            <div style="width:80px;height:80px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem;font-size:2rem;animation:pulse-ring 2s ease-out infinite;">
+                <i class="bi bi-broadcast"></i>
+            </div>
+            <h3 style="font-family:'Syne',sans-serif;font-size:1.6rem;color:#fff;margin-bottom:.5rem;">Radio Tutelares FM</h3>
+            <p style="color:rgba(255,255,255,.7);margin-bottom:2rem;">&#9679; EN VIVO — Noticias del Mediodía</p>
+
+            <!-- Barra de progreso falsa (para demo) -->
+            <div style="background:rgba(255,255,255,.15);border-radius:4px;height:6px;margin-bottom:1.5rem;overflow:hidden;">
+                <div style="width:40%;height:100%;background:var(--accent);border-radius:4px;animation:bar-grow 10s linear infinite;"></div>
+            </div>
+
+            <div style="display:flex;justify-content:center;gap:1.5rem;align-items:center;">
+                <i class="bi bi-skip-start-fill" style="font-size:1.5rem;cursor:pointer;opacity:.6;"></i>
+                <button style="width:56px;height:56px;border-radius:50%;background:var(--accent);border:none;color:white;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;" onclick="this.innerHTML=this.innerHTML.includes('play')?'<i class=\'bi bi-pause-fill\'></i>':'<i class=\'bi bi-play-fill\'></i>'">
+                    <i class="bi bi-play-fill"></i>
+                </button>
+                <i class="bi bi-skip-end-fill" style="font-size:1.5rem;cursor:pointer;opacity:.6;"></i>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:1.5rem;color:rgba(255,255,255,.6);">
+                <i class="bi bi-volume-down"></i>
+                <div style="width:120px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;">
+                    <div style="width:70%;height:100%;background:rgba(255,255,255,.7);border-radius:2px;"></div>
+                </div>
+                <i class="bi bi-volume-up"></i>
+            </div>
+        </div>
+
+        <!-- Próximos programas -->
+        <div style="padding:1.5rem 2rem;background:#1a1a1a;color:rgba(255,255,255,.8);">
+            <h4 style="font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.4);margin-bottom:1rem;">Próximos Programas</h4>
+            <div style="display:flex;flex-direction:column;gap:.75rem;">
+                <div style="display:flex;justify-content:space-between;font-size:.9rem;"><span>15:00 — El Análisis</span><span style="color:var(--accent);">Política &amp; Sociedad</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:.9rem;"><span>17:00 — Tarde Deportiva</span><span style="color:var(--accent);">Deportes</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:.9rem;"><span>20:00 — Noticiero Central</span><span style="color:var(--accent);">Noticias</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@keyframes bar-grow {
+    0%   { width: 0%; }
+    100% { width: 100%; }
+}
+</style>

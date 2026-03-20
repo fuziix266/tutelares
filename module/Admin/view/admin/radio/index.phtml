@@ -1,0 +1,81 @@
+<?php $this->headTitle('Panel Radio'); ?>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem;font-weight:800;">Panel Radio Tutelares</h1>
+    <p style="color:#888;font-size:.9rem;margin-top:.2rem;">Gestión de programación y transmisión en vivo</p>
+</div>
+
+<!-- Estado actual de la Radio -->
+<div class="stats-grid" style="margin-bottom:2rem;">
+    <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(255,28,92,0.15);color:var(--accent);">
+            <i class="bi bi-broadcast"></i>
+        </div>
+        <div>
+            <div class="stat-label">Estado</div>
+            <div class="stat-value" style="font-size:1rem;color:var(--accent);">● EN VIVO</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(0,123,255,0.1);color:#007bff;">
+            <i class="bi bi-people"></i>
+        </div>
+        <div>
+            <div class="stat-label">Oyentes estimados</div>
+            <div class="stat-value">247</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(40,167,69,0.1);color:#28a745;">
+            <i class="bi bi-calendar-check"></i>
+        </div>
+        <div>
+            <div class="stat-label">Programas hoy</div>
+            <div class="stat-value">6</div>
+        </div>
+    </div>
+</div>
+
+<!-- Panel genérico - sección próxima implementación -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="bi bi-collection-play" style="color:var(--accent);margin-right:.5rem;"></i> Programación del Día</h2>
+        </div>
+        <div class="card-body" style="padding:0;">
+            <table class="table">
+                <thead><tr><th>Horario</th><th>Programa</th><th>Conductor</th></tr></thead>
+                <tbody>
+                    <tr><td style="font-size:.9rem;color:#999;">08:00 – 10:00</td><td><strong>Buenos Días Región</strong></td><td>María González</td></tr>
+                    <tr><td style="font-size:.9rem;color:#999;">10:00 – 12:00</td><td><strong>La Mañana Deportiva</strong></td><td>Rodrigo Salinas</td></tr>
+                    <tr><td style="font-size:.9rem;color:#999;">12:00 – 13:00</td><td><strong>Noticias del Mediodía</strong></td><td>Redacción</td></tr>
+                    <tr><td style="font-size:.9rem;color:#999;">15:00 – 17:00</td><td><strong>El Análisis</strong></td><td>Carlos Muñoz</td></tr>
+                    <tr><td style="font-size:.9rem;color:#999;">17:00 – 19:00</td><td><strong>Tarde Deportiva</strong></td><td>Rodrigo Salinas</td></tr>
+                    <tr><td style="font-size:.9rem;color:#999;">20:00 – 21:00</td><td><strong>Noticiero Central</strong></td><td>Redacción</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="bi bi-tools" style="color:var(--accent);margin-right:.5rem;"></i> Herramientas</h2>
+        </div>
+        <div class="card-body">
+            <div style="text-align:center;padding:2rem 1rem;color:#bbb;">
+                <i class="bi bi-gear" style="font-size:3rem;display:block;margin-bottom:1rem;opacity:.4;"></i>
+                <p style="font-size:.95rem;line-height:1.7;">
+                    Las herramientas de gestión de programación, carga de audios y configuración del streaming
+                    estarán disponibles próximamente.
+                </p>
+                <div style="margin-top:1.5rem;">
+                    <span class="badge badge-gray" style="font-size:.8rem;padding:.4rem .9rem;">
+                        <i class="bi bi-clock"></i> &nbsp;Próximamente
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

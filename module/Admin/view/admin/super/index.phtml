@@ -1,0 +1,123 @@
+<?php $this->headTitle('Super Administrador'); ?>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem;font-weight:800;">Panel Super Administrador</h1>
+    <p style="color:#888;font-size:.9rem;margin-top:.2rem;">Vista global del portal TUTELARES</p>
+</div>
+
+<!-- Estadísticas globales -->
+<div class="stats-grid" style="margin-bottom:2rem;">
+    <div class="stat-card">
+        <div class="stat-icon"><i class="bi bi-newspaper"></i></div>
+        <div>
+            <div class="stat-label">Total Noticias</div>
+            <div class="stat-value"><?= $totalNoticias ?></div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(255,28,92,0.12);color:var(--accent);">
+            <i class="bi bi-broadcast"></i>
+        </div>
+        <div>
+            <div class="stat-label">Radio</div>
+            <div class="stat-value" style="font-size:1rem;color:var(--accent);">EN VIVO</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(0,123,255,0.1);color:#007bff;">
+            <i class="bi bi-people"></i>
+        </div>
+        <div>
+            <div class="stat-label">Usuarios del sistema</div>
+            <div class="stat-value">3</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(40,167,69,0.1);color:#28a745;">
+            <i class="bi bi-globe"></i>
+        </div>
+        <div>
+            <div class="stat-label">Estado del portal</div>
+            <div class="stat-value" style="font-size:1rem;color:#28a745;">● Activo</div>
+        </div>
+    </div>
+</div>
+
+<div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;">
+
+    <!-- Últimas noticias (sin acciones de edición — el super ve todo) -->
+    <div class="card">
+        <div class="card-header">
+            <h2><i class="bi bi-newspaper" style="color:var(--accent);margin-right:.5rem;"></i> Últimas Noticias</h2>
+            <a href="/medio-comunicacion/public/admin/publisher" class="btn btn-sm btn-outline">
+                <i class="bi bi-pencil"></i> Ir al Publisher
+            </a>
+        </div>
+        <div class="card-body" style="padding:0;">
+            <table class="table">
+                <thead>
+                    <tr><th>ID</th><th>Título</th><th>Categoría</th><th>Fecha</th></tr>
+                </thead>
+                <tbody>
+                    <?php foreach (array_slice($noticias, 0, 8) as $n): ?>
+                    <tr>
+                        <td style="color:#999;font-size:.8rem;">#<?= $n['id'] ?></td>
+                        <td><strong><?= htmlspecialchars($n['titulo']) ?></strong></td>
+                        <td><span class="badge badge-pink"><?= htmlspecialchars($n['categoria']) ?></span></td>
+                        <td style="font-size:.8rem;color:#999;"><?= date('d/m/Y', strtotime($n['creado_en'])) ?></td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Panel lateral: accesos rápidos y usuarios -->
+    <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+        <div class="card">
+            <div class="card-header"><h2><i class="bi bi-lightning" style="color:var(--accent);margin-right:.5rem;"></i> Accesos Rápidos</h2></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem;">
+                <a href="/medio-comunicacion/public/admin/publisher" class="btn btn-outline" style="justify-content:flex-start;">
+                    <i class="bi bi-newspaper"></i> Panel Publisher
+                </a>
+                <a href="/medio-comunicacion/public/admin/radio-panel" class="btn btn-outline" style="justify-content:flex-start;">
+                    <i class="bi bi-broadcast"></i> Panel Radio
+                </a>
+                <a href="/medio-comunicacion/public/" target="_blank" class="btn btn-outline" style="justify-content:flex-start;">
+                    <i class="bi bi-globe"></i> Ver Portal
+                </a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h2><i class="bi bi-people" style="color:var(--accent);margin-right:.5rem;"></i> Usuarios del Sistema</h2></div>
+            <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem;">
+                <div style="display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;background:#f9f9f9;border-radius:8px;">
+                    <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;">PB</div>
+                    <div><div style="font-weight:600;font-size:.88rem;">Publisher</div><div style="font-size:.75rem;color:#888;">Redactor de noticias</div></div>
+                    <span class="badge badge-pink" style="margin-left:auto;">publisher</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;background:#f9f9f9;border-radius:8px;">
+                    <div style="width:32px;height:32px;border-radius:50%;background:#007bff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;">RD</div>
+                    <div><div style="font-weight:600;font-size:.88rem;">Radio</div><div style="font-size:.75rem;color:#888;">Administrador de radio</div></div>
+                    <span class="badge" style="background:rgba(0,123,255,.12);color:#007bff;margin-left:auto;">radio</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;background:#f9f9f9;border-radius:8px;">
+                    <div style="width:32px;height:32px;border-radius:50%;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;">SU</div>
+                    <div><div style="font-weight:600;font-size:.88rem;">SuperUsuario</div><div style="font-size:.75rem;color:#888;">Acceso total al sistema</div></div>
+                    <span class="badge" style="background:rgba(0,0,0,.08);color:#111;margin-left:auto;">super</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h2><i class="bi bi-tools" style="color:var(--accent);margin-right:.5rem;"></i> Configuración</h2></div>
+            <div class="card-body" style="text-align:center;padding:1.5rem;color:#ccc;">
+                <i class="bi bi-gear" style="font-size:2.5rem;display:block;margin-bottom:.75rem;opacity:.4;"></i>
+                <p style="font-size:.85rem;">Configuración avanzada próximamente.</p>
+            </div>
+        </div>
+
+    </div>
+</div>

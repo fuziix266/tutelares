@@ -1,0 +1,65 @@
+<?php $this->headTitle('Gestionar Noticias'); ?>
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
+    <h1 style="font-size:1.4rem;font-weight:800;">Noticias</h1>
+    <a href="/medio-comunicacion/public/admin/noticia/crear" class="btn btn-primary">
+        <i class="bi bi-plus-lg"></i> Nueva Noticia
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body" style="padding:0;">
+        <?php $rows = $noticias; ?>
+        <?php if (empty($rows)): ?>
+            <div style="padding:3rem;text-align:center;color:#999;">
+                <i class="bi bi-inbox" style="font-size:2.5rem;display:block;margin-bottom:1rem;"></i>
+                No hay noticias publicadas todavía.
+                <br><br>
+                <a href="/medio-comunicacion/public/admin/noticia/crear" class="btn btn-primary">Crear primera noticia</a>
+            </div>
+        <?php else: ?>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="50">ID</th>
+                    <th>Título</th>
+                    <th>Categoría</th>
+                    <th>Autor</th>
+                    <th>Fecha</th>
+                    <th width="120">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($rows as $n): ?>
+                <tr>
+                    <td style="color:#999;font-size:.8rem;">#<?= $n['id'] ?></td>
+                    <td>
+                        <strong><?= htmlspecialchars($n['titulo']) ?></strong>
+                        <?php if (!empty($n['resumen'])): ?>
+                        <div style="font-size:.8rem;color:#999;margin-top:.2rem;"><?= htmlspecialchars(substr($n['resumen'], 0, 80)) ?>...</div>
+                        <?php endif; ?>
+                    </td>
+                    <td><span class="badge badge-pink"><?= htmlspecialchars($n['categoria']) ?></span></td>
+                    <td style="font-size:.9rem;"><?= htmlspecialchars($n['autor']) ?></td>
+                    <td style="font-size:.8rem;color:#999;white-space:nowrap;">
+                        <?= date('d/m/Y', strtotime($n['creado_en'])) ?>
+                    </td>
+                    <td>
+                        <a href="/medio-comunicacion/public/admin/noticia/editar/<?= $n['id'] ?>"
+                           class="btn btn-sm btn-outline" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        &nbsp;
+                        <a href="/medio-comunicacion/public/admin/noticia/eliminar/<?= $n['id'] ?>"
+                           class="btn btn-sm btn-danger" title="Eliminar"
+                           onclick="return confirm('¿Estás seguro de eliminar esta noticia?')">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php endif; ?>
+    </div>
+</div>

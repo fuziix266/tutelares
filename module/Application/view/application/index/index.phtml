@@ -2,75 +2,207 @@
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
+
+// Noticias de ejemplo (se reemplazarán con datos reales de DB)
+$noticias = [
+    [
+        'cat' => 'Política', 'tiempo' => 'Hace 1 hora', 'autor' => 'Redacción',
+        'titulo' => 'Gobierno Regional presenta plan de inversión para el norte del país',
+        'resumen' => 'El ejecutivo aprobó un paquete de obras públicas que incluye infraestructura vial, conectividad digital y construcción de nuevos establecimientos educacionales.',
+        'img' => 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=600&q=80',
+    ],
+    [
+        'cat' => 'Economía', 'tiempo' => 'Hace 3 horas', 'autor' => 'Economía Desk',
+        'titulo' => 'Precio del cobre cierra la semana al alza impulsado por demanda asiática',
+        'resumen' => 'El metal registró su mayor subida semanal en dos meses, beneficiando directamente a las regiones productoras del norte.',
+        'img' => 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80',
+    ],
+    [
+        'cat' => 'Cultura', 'tiempo' => 'Hace 5 horas', 'autor' => 'Cultura & Vida',
+        'titulo' => 'Festival de Música Andina reúne a artistas de Chile, Bolivia y Perú',
+        'resumen' => 'La celebración anual regresa con fuerzas renovadas y promete tres días de conciertos, gastronomía y artesanía en el centro histórico.',
+        'img' => 'https://images.unsplash.com/photo-1605634691459-0010fd710776?w=600&q=80',
+    ],
+    [
+        'cat' => 'Deportes', 'tiempo' => 'Ayer', 'autor' => 'Deportes Tutelares',
+        'titulo' => 'Equipo local clasifica a semifinales del torneo regional de fútbol',
+        'resumen' => 'Con un marcador apretado de 2-1, los locales repiten la hazaña de años anteriores y avanzarán a la siguiente ronda del campeonato.',
+        'img' => 'https://images.unsplash.com/photo-1551958219-acbc7db4ef7e?w=600&q=80',
+    ],
+    [
+        'cat' => 'Tecnología', 'tiempo' => 'Ayer', 'autor' => 'Tech Desk',
+        'titulo' => 'Municipio implementa sistema de semáforos inteligentes con IA en el centro',
+        'resumen' => 'El proyecto piloto, financiado por fondos de innovación pública, busca reducir la congestión vehicular en un 30% durante horas peak.',
+        'img' => 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80',
+    ],
+    [
+        'cat' => 'Sociedad', 'tiempo' => 'Hace 2 días', 'autor' => 'Redacción',
+        'titulo' => 'Nueva política de reciclaje transforma la gestión de residuos en la ciudad',
+        'resumen' => 'El programa comunitario ha logrado reducir en un 40% los desechos que van a vertedero gracias a la participación activa de vecinos y comercios.',
+        'img' => 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=600&q=80',
+    ],
+];
 ?>
-<div class="p-5 mb-4 bg-light rounded-3">
-    <h1 class="display-4">Welcome to<br>Laminas MVC Skeleton Application</h1>
 
-    <p>
-        Congratulations! You have successfully installed the
-        <a href="https://github.com/laminas/laminas-mvc-skeleton" target="_blank">Laminas MVC Skeleton</a>.
-        This skeleton can serve as a simple starting point for you to begin
-        building your application on Laminas MVC.
-    </p>
+<!-- TICKER -->
+<div class="ticker-bar">
+    <div class="ticker-inner">
+        <span>&#128308; EN VIVO</span>
+        <span class="sep">|</span>
+        <span>Gobierno anuncia nuevas inversiones regionales</span>
+        <span class="sep">&#8226;</span>
+        <span>Precio del cobre sube 2.3% en la semana</span>
+        <span class="sep">&#8226;</span>
+        <span>Festival Andino abre convocatoria para artistas locales</span>
+        <span class="sep">&#8226;</span>
+        <span>Equipo local avanza a semifinales del torneo regional</span>
+        <span class="sep">&#8226;</span>
+        <!-- duplicado para loop continuo -->
+        <span>&#128308; EN VIVO</span>
+        <span class="sep">|</span>
+        <span>Gobierno anuncia nuevas inversiones regionales</span>
+        <span class="sep">&#8226;</span>
+        <span>Precio del cobre sube 2.3% en la semana</span>
+        <span class="sep">&#8226;</span>
+        <span>Festival Andino abre convocatoria para artistas locales</span>
+        <span class="sep">&#8226;</span>
+        <span>Equipo local avanza a semifinales del torneo regional</span>
+    </div>
+</div>
 
-    <hr class="my-4">
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <span class="hero-tag"><i class="bi bi-lightning-charge-fill"></i> Última Hora</span>
+        <h1 class="hero-title">
+            Noticias que <span class="highlight">importan</span>,<br>cuando más las necesitas.
+        </h1>
+        <p class="hero-excerpt">
+            TUTELARES es el portal de periodismo regional independiente. Cobertura en tiempo real, análisis profundo y radio online las 24 horas.
+        </p>
+        <a href="<?= $this->url('noticia') ?>" class="btn-hero">
+            Ver todas las noticias <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+    <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1200&q=80" alt="Noticias de hoy">
+    </div>
+</section>
 
-    <a class="btn btn-primary btn-lg" href="https://github.com/laminas" target="_blank">
-        Check Laminas on GitHub &raquo;
+<!-- NOTICIAS DESTACADAS -->
+<section class="section container">
+    <div class="section-header">
+        <h2>En Portada</h2>
+        <a href="<?= $this->url('noticia') ?>" class="section-link">Ver todo <i class="bi bi-arrow-right"></i></a>
+    </div>
+
+    <div class="featured-grid">
+        <!-- Noticia grande -->
+        <div class="featured-card">
+            <img src="<?= $noticias[0]['img'] ?>" alt="<?= htmlspecialchars($noticias[0]['titulo']) ?>">
+            <div class="featured-overlay">
+                <span class="news-card-cat"><?= $noticias[0]['cat'] ?></span>
+                <h2 class="featured-title"><?= htmlspecialchars($noticias[0]['titulo']) ?></h2>
+                <div class="news-card-meta" style="color:rgba(255,255,255,0.65);">
+                    <span><i class="bi bi-person"></i> <?= $noticias[0]['autor'] ?></span>
+                    <span><i class="bi bi-clock"></i> <?= $noticias[0]['tiempo'] ?></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Noticias lateral -->
+        <div class="side-cards">
+            <?php foreach (array_slice($noticias, 1, 3) as $n): ?>
+            <div class="side-card">
+                <div class="side-card-img">
+                    <img src="<?= $n['img'] ?>" alt="<?= htmlspecialchars($n['titulo']) ?>">
+                </div>
+                <div class="side-card-body">
+                    <span class="news-card-cat" style="position:static;font-size:.65rem;"><?= $n['cat'] ?></span>
+                    <h3 class="side-card-title"><?= htmlspecialchars($n['titulo']) ?></h3>
+                    <span style="font-size:.8rem;color:#999;"><i class="bi bi-clock"></i> <?= $n['tiempo'] ?></span>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</section>
+
+<!-- RADIO BANNER -->
+<div class="radio-banner">
+    <div class="radio-info">
+        <div class="radio-pulse">
+            <i class="bi bi-broadcast"></i>
+        </div>
+        <div class="radio-text">
+            <h3>Radio Tutelares • En Vivo</h3>
+            <p>Transmitiendo ahora: Noticias del Mediodía — Música Andina & Regional las 24 horas</p>
+        </div>
+    </div>
+    <a href="<?= $this->url('radio') ?>" class="btn-listen">
+        <i class="bi bi-play-circle-fill"></i> Escuchar Ahora
     </a>
 </div>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    <div class="col">
-        <div class="card h-100">
-            <h2 class="card-header">Follow Development</h2>
-            <div class="card-body">
-                <p>
-                    Laminas Project is under active development. If you are
-                    interested in following the development, you can check
-                    <a href="https://getlaminas.org/blog/">Laminas dev blog</a>,
-                    and <a href="https://github.com/issues?utf8=%E2%9C%93&amp;q=is:issue+org:laminas">Laminas issue tracker</a>
-                    (link requires a GitHub account). This is a great resource
-                    for staying up to date with the latest developments!
-                </p>
-            </div>
-            <div class="card-footer">
-                <a class="btn btn-primary" href="https://getlaminas.org/" target="_blank">Laminas Project Portal &raquo;</a>
-            </div>
+<!-- ÚLTIMA HORA: GRID -->
+<section class="section section-alt">
+    <div class="container">
+        <div class="section-header">
+            <h2>Últimas Noticias</h2>
+            <a href="<?= $this->url('noticia') ?>" class="section-link">Más noticias <i class="bi bi-arrow-right"></i></a>
         </div>
-    </div>
 
-    <div class="col">
-        <div class="card h-100">
-            <h2 class="card-header">Discover Modules</h2>
-            <div class="card-body">
-                <p>
-                    Laminas MVC is a modular application.
-                    You can find multiple compatible modules on packagist.
-                </p>
-            </div>
-            <div class="card-footer">
-                <a class="btn btn-primary" href="https://packagist.org/?tags=module~zf2~zendframework~zend%20framework~zend%20framework%202~zf3~zf~zend~laminas" target="_blank">
-                    Explore Laminas Modules &raquo;</a>
-            </div>
+        <div class="news-grid">
+            <?php foreach ($noticias as $n): ?>
+            <article class="news-card">
+                <div class="news-card-img">
+                    <img src="<?= $n['img'] ?>" alt="<?= htmlspecialchars($n['titulo']) ?>" loading="lazy">
+                    <span class="news-card-cat"><?= $n['cat'] ?></span>
+                </div>
+                <div class="news-card-body">
+                    <h3 class="news-card-title"><?= htmlspecialchars($n['titulo']) ?></h3>
+                    <p style="font-size:.9rem;color:#666;line-height:1.6;"><?= htmlspecialchars($n['resumen']) ?></p>
+                    <div class="news-card-meta">
+                        <span><i class="bi bi-person"></i> <?= $n['autor'] ?></span>
+                        <span><i class="bi bi-clock"></i> <?= $n['tiempo'] ?></span>
+                    </div>
+                </div>
+            </article>
+            <?php endforeach; ?>
         </div>
     </div>
+</section>
 
-    <div class="col">
-        <div class="card h-100">
-            <h2 class="card-header">Help &amp; Support</h2>
-            <div class="card-body">
-                <p>
-                    If you need any help or support while developing with Laminas,
-                    you may reach us via <a href="https://laminas.dev/chat">chat</a> or
-                    <a href="https://discourse.laminas.dev">forum</a>.
-                    We'd love to hear any questions or feedback you may have
-                    regarding any release.
-                </p>
-            </div>
-            <div class="card-footer">
-                <a class="btn btn-primary" href="https://laminas.dev/chat" target="_blank">Ping us on chat &raquo;</a>
-            </div>
-        </div>
+<!-- CATEGORÍAS -->
+<section class="section container">
+    <div class="section-header">
+        <h2>Explorar por Categoría</h2>
+        <a href="<?= $this->url('categoria') ?>" class="section-link">Ver todas <i class="bi bi-arrow-right"></i></a>
     </div>
-</div>
+    <div class="cat-grid">
+        <a href="<?= $this->url('categoria') ?>" class="cat-pill">
+            <i class="bi bi-bank"></i> Política
+        </a>
+        <a href="<?= $this->url('categoria') ?>" class="cat-pill">
+            <i class="bi bi-graph-up-arrow"></i> Economía
+        </a>
+        <a href="<?= $this->url('categoria') ?>" class="cat-pill">
+            <i class="bi bi-trophy"></i> Deportes
+        </a>
+        <a href="<?= $this->url('categoria') ?>" class="cat-pill">
+            <i class="bi bi-cpu"></i> Tecnología
+        </a>
+        <a href="<?= $this->url('categoria') ?>" class="cat-pill">
+            <i class="bi bi-music-note-beamed"></i> Cultura
+        </a>
+        <a href="<?= $this->url('categoria') ?>" class="cat-pill">
+            <i class="bi bi-people"></i> Sociedad
+        </a>
+        <a href="<?= $this->url('categoria') ?>" class="cat-pill">
+            <i class="bi bi-globe2"></i> Internacional
+        </a>
+        <a href="<?= $this->url('categoria') ?>" class="cat-pill">
+            <i class="bi bi-heart-pulse"></i> Salud
+        </a>
+    </div>
+</section>
