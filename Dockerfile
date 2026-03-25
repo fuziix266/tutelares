@@ -43,36 +43,20 @@ RUN apt-get install --yes libicu-dev \
 ###
 
 ## MySQL PDO support
-# RUN docker-php-ext-install pdo_mysql
-
-## PostgreSQL PDO support
-# RUN apt-get install --yes libpq-dev \
-#     && docker-php-ext-install pdo_pgsql
+RUN docker-php-ext-install pdo_mysql
 
 ###
 ## laminas/laminas-cache supported extensions
 ###
 
-## APCU
-# RUN pecl install apcu \
-#     && docker-php-ext-enable apcu
-
-## Memcached
-# RUN apt-get install --yes libmemcached-dev \
-#     && pecl install memcached \
-#     && docker-php-ext-enable memcached
-
-## MongoDB
-# RUN pecl install mongodb \
-#     && docker-php-ext-enable mongodb
-
-## Redis support.  igbinary and libzstd-dev are only needed based on 
-## redis pecl options
-# RUN pecl install igbinary \
-#     && docker-php-ext-enable igbinary \
-#     && apt-get install --yes libzstd-dev \
-#     && pecl install redis \
-#     && docker-php-ext-enable redis
-
-
 WORKDIR /var/www
+
+# Copiar el código fuente
+COPY . /var/www
+
+# Instalar dependencias de Composer
+RUN composer install --no-interaction --optimize-autoloader --no-dev
+
+# Ajustar permisos para Apache
+RUN chown -R www-data:www-data /var/www \
+    && chmod -R 775 /var/www/data/cache
