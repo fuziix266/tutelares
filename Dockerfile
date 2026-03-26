@@ -58,5 +58,6 @@ COPY . /var/www
 RUN composer install --no-interaction --optimize-autoloader --no-dev
 
 # Ajustar permisos para Apache
-RUN chown -R www-data:www-data /var/www \
-    && chmod -R 775 /var/www/data/cache
+RUN mkdir -p /var/www/data/cache && \
+    chown -R www-data:www-data /var/www && \
+    chmod -R 777 /var/www/data/cache
