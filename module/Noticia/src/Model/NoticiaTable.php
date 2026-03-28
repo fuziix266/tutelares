@@ -16,6 +16,13 @@ class NoticiaTable
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function fetchByCategory(string $cat): array
+    {
+        $stmt = $this->pdo->prepare('SELECT * FROM noticias WHERE categoria = ? ORDER BY creado_en DESC');
+        $stmt->execute([$cat]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function getById(int $id): ?array
     {
         $stmt = $this->pdo->prepare('SELECT * FROM noticias WHERE id = ?');

@@ -5,8 +5,24 @@ use Laminas\View\Model\ViewModel;
 
 class CategoriaController extends AbstractActionController
 {
-    public function indexAction(): ViewModel
+    private $table;
+
+    public function __construct($table)
     {
-        return new ViewModel();
+        $this->table = $table;
+    }
+
+    public function indexAction()
+    {
+        $id = $this->params()->fromRoute('id');
+        if (!$id) {
+            return new ViewModel();
+        }
+
+        $noticias = $this->table->fetchByCategory($id);
+        return new ViewModel([
+            'categoria' => $id,
+            'noticias' => $noticias
+        ]);
     }
 }

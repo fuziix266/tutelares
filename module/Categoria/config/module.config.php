@@ -6,9 +6,9 @@ return [
     'router' => [
         'routes' => [
             'categoria' => [
-                'type'    => Literal::class,
+                'type'    => Segment::class,
                 'options' => [
-                    'route'    => '/categoria',
+                    'route'    => '/categoria[/:id]',
                     'defaults' => ['controller' => Controller\CategoriaController::class, 'action' => 'index'],
                 ],
             ],
@@ -16,7 +16,7 @@ return [
     ],
     'controllers' => [
         'factories' => [
-            Controller\CategoriaController::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
+            Controller\CategoriaController::class => Controller\Factory\CategoriaControllerFactory::class,
         ],
     ],
     'view_manager' => [
