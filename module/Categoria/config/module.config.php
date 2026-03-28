@@ -1,6 +1,7 @@
 <?php
 namespace Categoria;
 use Laminas\Router\Http\Literal;
+use Laminas\Router\Http\Segment;
 
 return [
     'router' => [
