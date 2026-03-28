@@ -122,7 +122,7 @@ return [
 
     'db' => [
         'driver' => 'Pdo_Mysql',
-        'host' => getenv('DB_HOST') ?: '127.0.0.1',
+        'host' => getenv('DB_HOST') ?: 'mysql',
         'database' => getenv('DB_NAME') ?: 'tutelares',
         'username' => getenv('DB_USER') ?: 'root',
         'password' => getenv('DB_PASS') ?: '',
