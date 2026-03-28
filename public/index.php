@@ -21,6 +21,10 @@ if (php_sapi_name() === 'cli-server') {
 
 // Composer autoloading
 include __DIR__ . '/../vendor/autoload.php';
+if (file_exists(__DIR__ . '/../.env')) {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+    $dotenv->load();
+}
 
 if (! class_exists(Application::class)) {
     throw new RuntimeException(
