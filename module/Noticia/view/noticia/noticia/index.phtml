@@ -1,49 +1,30 @@
+<?php
+$noticias = $this->noticias ?? [];
+?>
 <div class="section container">
     <div class="section-header">
-        <h2>Últimas Noticias</h2>
+        <h2>Listado de Noticias</h2>
     </div>
     <div class="news-grid">
-        <article class="news-card">
-            <div class="news-card-img">
-                <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=600&q=80" alt="Noticias" loading="lazy">
-                <span class="news-card-cat">Política</span>
-            </div>
-            <div class="news-card-body">
-                <h3 class="news-card-title">Nuevas medidas legislativas entran en debate esta semana</h3>
-                <p style="font-size:.9rem;color:#666;">El parlamento sesionará en modalidad extendida para revisar el proyecto que podría afectar miles de ciudadanos.</p>
-                <div class="news-card-meta">
-                    <span><i class="bi bi-person"></i> Redacción</span>
-                    <span><i class="bi bi-clock"></i> Hoy</span>
+        <?php if (count($noticias) > 0): ?>
+            <?php foreach ($noticias as $n): ?>
+            <article class="news-card">
+                <div class="news-card-img">
+                    <img src="<?= htmlspecialchars($n['imagen'] ?: 'https://via.placeholder.com/600x400?text=Tutelares') ?>" alt="<?= htmlspecialchars($n['titulo']) ?>" loading="lazy">
+                    <span class="news-card-cat"><?= htmlspecialchars($n['categoria']) ?></span>
                 </div>
-            </div>
-        </article>
-        <article class="news-card">
-            <div class="news-card-img">
-                <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80" alt="Economía" loading="lazy">
-                <span class="news-card-cat">Economía</span>
-            </div>
-            <div class="news-card-body">
-                <h3 class="news-card-title">Mercados globales reaccionan positivamente a datos de inflación</h3>
-                <p style="font-size:.9rem;color:#666;">Las bolsas de todo el mundo abrieron al alza luego de que los datos de inflación mostraran una baja sostenida.</p>
-                <div class="news-card-meta">
-                    <span><i class="bi bi-person"></i> Economía Desk</span>
-                    <span><i class="bi bi-clock"></i> Hoy</span>
+                <div class="news-card-body">
+                    <h3 class="news-card-title"><?= htmlspecialchars($n['titulo']) ?></h3>
+                    <p style="font-size:.9rem;color:#666;line-height:1.6;"><?= htmlspecialchars($n['resumen'] ?: substr(strip_tags($n['contenido']), 0, 150)) ?></p>
+                    <div class="news-card-meta">
+                        <span><i class="bi bi-person"></i> <?= htmlspecialchars($n['autor'] ?: 'Redacción') ?></span>
+                        <span><i class="bi bi-clock"></i> <?= date('d/m/Y', strtotime($n['creado_en'])) ?></span>
+                    </div>
                 </div>
-            </div>
-        </article>
-        <article class="news-card">
-            <div class="news-card-img">
-                <img src="https://images.unsplash.com/photo-1551958219-acbc7db4ef7e?w=600&q=80" alt="Deportes" loading="lazy">
-                <span class="news-card-cat">Deportes</span>
-            </div>
-            <div class="news-card-body">
-                <h3 class="news-card-title">Selección regional gana el campeonato intercomunal de atletismo</h3>
-                <p style="font-size:.9rem;color:#666;">Tras meses de entrenamiento, el equipo local se coronó campeón con un nuevo récord en la categoría mayores.</p>
-                <div class="news-card-meta">
-                    <span><i class="bi bi-person"></i> Deportes</span>
-                    <span><i class="bi bi-clock"></i> Ayer</span>
-                </div>
-            </div>
-        </article>
+            </article>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>Aún no hay noticias publicadas.</p>
+        <?php endif; ?>
     </div>
 </div>

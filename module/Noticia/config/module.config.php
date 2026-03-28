@@ -15,9 +15,14 @@ return [
             ],
         ],
     ],
+    'service_manager' => [
+        'factories' => [
+            Model\NoticiaTable::class => Model\Factory\NoticiaTableFactory::class,
+        ],
+    ],
     'controllers' => [
         'factories' => [
-            Controller\NoticiaController::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
+            Controller\NoticiaController::class => Controller\Factory\NoticiaControllerFactory::class,
         ],
     ],
     'view_manager' => [

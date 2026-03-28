@@ -3,7 +3,7 @@ namespace Admin\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use Admin\Model\NoticiaTable;
+use Noticia\Model\NoticiaTable;
 
 class IndexController extends AbstractActionController
 {

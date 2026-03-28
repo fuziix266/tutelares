@@ -2,46 +2,7 @@
 /**
  * @var Laminas\View\Renderer\PhpRenderer $this
  */
-
-// Noticias de ejemplo (se reemplazarán con datos reales de DB)
-$noticias = [
-    [
-        'cat' => 'Política', 'tiempo' => 'Hace 1 hora', 'autor' => 'Redacción',
-        'titulo' => 'Gobierno Regional presenta plan de inversión para el norte del país',
-        'resumen' => 'El ejecutivo aprobó un paquete de obras públicas que incluye infraestructura vial, conectividad digital y construcción de nuevos establecimientos educacionales.',
-        'img' => 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=600&q=80',
-    ],
-    [
-        'cat' => 'Economía', 'tiempo' => 'Hace 3 horas', 'autor' => 'Economía Desk',
-        'titulo' => 'Precio del cobre cierra la semana al alza impulsado por demanda asiática',
-        'resumen' => 'El metal registró su mayor subida semanal en dos meses, beneficiando directamente a las regiones productoras del norte.',
-        'img' => 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80',
-    ],
-    [
-        'cat' => 'Cultura', 'tiempo' => 'Hace 5 horas', 'autor' => 'Cultura & Vida',
-        'titulo' => 'Festival de Música Andina reúne a artistas de Chile, Bolivia y Perú',
-        'resumen' => 'La celebración anual regresa con fuerzas renovadas y promete tres días de conciertos, gastronomía y artesanía en el centro histórico.',
-        'img' => 'https://images.unsplash.com/photo-1605634691459-0010fd710776?w=600&q=80',
-    ],
-    [
-        'cat' => 'Deportes', 'tiempo' => 'Ayer', 'autor' => 'Deportes Tutelares',
-        'titulo' => 'Equipo local clasifica a semifinales del torneo regional de fútbol',
-        'resumen' => 'Con un marcador apretado de 2-1, los locales repiten la hazaña de años anteriores y avanzarán a la siguiente ronda del campeonato.',
-        'img' => 'https://images.unsplash.com/photo-1551958219-acbc7db4ef7e?w=600&q=80',
-    ],
-    [
-        'cat' => 'Tecnología', 'tiempo' => 'Ayer', 'autor' => 'Tech Desk',
-        'titulo' => 'Municipio implementa sistema de semáforos inteligentes con IA en el centro',
-        'resumen' => 'El proyecto piloto, financiado por fondos de innovación pública, busca reducir la congestión vehicular en un 30% durante horas peak.',
-        'img' => 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&q=80',
-    ],
-    [
-        'cat' => 'Sociedad', 'tiempo' => 'Hace 2 días', 'autor' => 'Redacción',
-        'titulo' => 'Nueva política de reciclaje transforma la gestión de residuos en la ciudad',
-        'resumen' => 'El programa comunitario ha logrado reducir en un 40% los desechos que van a vertedero gracias a la participación activa de vecinos y comercios.',
-        'img' => 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=600&q=80',
-    ],
-];
+$noticias = $this->noticias ?? [];
 ?>
 
 <!-- TICKER -->
@@ -49,24 +10,14 @@ $noticias = [
     <div class="ticker-inner">
         <span>&#128308; EN VIVO</span>
         <span class="sep">|</span>
-        <span>Gobierno anuncia nuevas inversiones regionales</span>
-        <span class="sep">&#8226;</span>
-        <span>Precio del cobre sube 2.3% en la semana</span>
-        <span class="sep">&#8226;</span>
-        <span>Festival Andino abre convocatoria para artistas locales</span>
-        <span class="sep">&#8226;</span>
-        <span>Equipo local avanza a semifinales del torneo regional</span>
-        <span class="sep">&#8226;</span>
-        <!-- duplicado para loop continuo -->
-        <span>&#128308; EN VIVO</span>
-        <span class="sep">|</span>
-        <span>Gobierno anuncia nuevas inversiones regionales</span>
-        <span class="sep">&#8226;</span>
-        <span>Precio del cobre sube 2.3% en la semana</span>
-        <span class="sep">&#8226;</span>
-        <span>Festival Andino abre convocatoria para artistas locales</span>
-        <span class="sep">&#8226;</span>
-        <span>Equipo local avanza a semifinales del torneo regional</span>
+        <?php if (count($noticias) > 0): ?>
+            <?php foreach (array_slice($noticias, 0, 4) as $n): ?>
+                <span><?= htmlspecialchars($n['titulo']) ?></span>
+                <span class="sep">&#8226;</span>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <span>No hay noticias recientes</span>
+        <?php endif; ?>
     </div>
 </div>
 
@@ -89,6 +40,7 @@ $noticias = [
     </div>
 </section>
 
+<?php if (count($noticias) > 0): ?>
 <!-- NOTICIAS DESTACADAS -->
 <section class="section container">
     <div class="section-header">
@@ -98,14 +50,15 @@ $noticias = [
 
     <div class="featured-grid">
         <!-- Noticia grande -->
+        <?php $n0 = $noticias[0]; ?>
         <div class="featured-card">
-            <img src="<?= $noticias[0]['img'] ?>" alt="<?= htmlspecialchars($noticias[0]['titulo']) ?>">
+            <img src="<?= htmlspecialchars($n0['imagen'] ?: 'https://via.placeholder.com/1200x600?text=Tutelares') ?>" alt="<?= htmlspecialchars($n0['titulo']) ?>">
             <div class="featured-overlay">
-                <span class="news-card-cat"><?= $noticias[0]['cat'] ?></span>
-                <h2 class="featured-title"><?= htmlspecialchars($noticias[0]['titulo']) ?></h2>
+                <span class="news-card-cat"><?= htmlspecialchars($n0['categoria']) ?></span>
+                <h2 class="featured-title"><?= htmlspecialchars($n0['titulo']) ?></h2>
                 <div class="news-card-meta" style="color:rgba(255,255,255,0.65);">
-                    <span><i class="bi bi-person"></i> <?= $noticias[0]['autor'] ?></span>
-                    <span><i class="bi bi-clock"></i> <?= $noticias[0]['tiempo'] ?></span>
+                    <span><i class="bi bi-person"></i> <?= htmlspecialchars($n0['autor'] ?: 'Redacción') ?></span>
+                    <span><i class="bi bi-clock"></i> <?= date('d/m/Y', strtotime($n0['creado_en'])) ?></span>
                 </div>
             </div>
         </div>
@@ -115,18 +68,19 @@ $noticias = [
             <?php foreach (array_slice($noticias, 1, 3) as $n): ?>
             <div class="side-card">
                 <div class="side-card-img">
-                    <img src="<?= $n['img'] ?>" alt="<?= htmlspecialchars($n['titulo']) ?>">
+                    <img src="<?= htmlspecialchars($n['imagen'] ?: 'https://via.placeholder.com/300x200?text=Tutelares') ?>" alt="<?= htmlspecialchars($n['titulo']) ?>">
                 </div>
                 <div class="side-card-body">
-                    <span class="news-card-cat" style="position:static;font-size:.65rem;"><?= $n['cat'] ?></span>
+                    <span class="news-card-cat" style="position:static;font-size:.65rem;"><?= htmlspecialchars($n['categoria']) ?></span>
                     <h3 class="side-card-title"><?= htmlspecialchars($n['titulo']) ?></h3>
-                    <span style="font-size:.8rem;color:#999;"><i class="bi bi-clock"></i> <?= $n['tiempo'] ?></span>
+                    <span style="font-size:.8rem;color:#999;"><i class="bi bi-clock"></i> <?= date('d M', strtotime($n['creado_en'])) ?></span>
                 </div>
             </div>
             <?php endforeach; ?>
         </div>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- RADIO BANNER -->
 <div class="radio-banner">
@@ -153,22 +107,26 @@ $noticias = [
         </div>
 
         <div class="news-grid">
-            <?php foreach ($noticias as $n): ?>
-            <article class="news-card">
-                <div class="news-card-img">
-                    <img src="<?= $n['img'] ?>" alt="<?= htmlspecialchars($n['titulo']) ?>" loading="lazy">
-                    <span class="news-card-cat"><?= $n['cat'] ?></span>
-                </div>
-                <div class="news-card-body">
-                    <h3 class="news-card-title"><?= htmlspecialchars($n['titulo']) ?></h3>
-                    <p style="font-size:.9rem;color:#666;line-height:1.6;"><?= htmlspecialchars($n['resumen']) ?></p>
-                    <div class="news-card-meta">
-                        <span><i class="bi bi-person"></i> <?= $n['autor'] ?></span>
-                        <span><i class="bi bi-clock"></i> <?= $n['tiempo'] ?></span>
+            <?php if (count($noticias) > 0): ?>
+                <?php foreach (array_slice($noticias, 0, 6) as $n): ?>
+                <article class="news-card">
+                    <div class="news-card-img">
+                        <img src="<?= htmlspecialchars($n['imagen'] ?: 'https://via.placeholder.com/600x400?text=Tutelares') ?>" alt="<?= htmlspecialchars($n['titulo']) ?>" loading="lazy">
+                        <span class="news-card-cat"><?= htmlspecialchars($n['categoria']) ?></span>
                     </div>
-                </div>
-            </article>
-            <?php endforeach; ?>
+                    <div class="news-card-body">
+                        <h3 class="news-card-title"><?= htmlspecialchars($n['titulo']) ?></h3>
+                        <p style="font-size:.9rem;color:#666;line-height:1.6;"><?= htmlspecialchars($n['resumen'] ?: substr(strip_tags($n['contenido']), 0, 150)) ?></p>
+                        <div class="news-card-meta">
+                            <span><i class="bi bi-person"></i> <?= htmlspecialchars($n['autor'] ?: 'Redacción') ?></span>
+                            <span><i class="bi bi-clock"></i> <?= date('d/m/Y', strtotime($n['creado_en'])) ?></span>
+                        </div>
+                    </div>
+                </article>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Próximamente más noticias...</p>
+            <?php endif; ?>
         </div>
     </div>
 </section>

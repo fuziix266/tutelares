@@ -113,7 +113,7 @@ $roleInfo = $roleLabels[$rol] ?? ['label' => 'Admin', 'icon' => 'bi-person'];
 
 <!-- SIDEBAR -->
 <aside class="sidebar">
-    <a class="sidebar-brand" href="/medio-comunicacion/public/admin/login">TUTE<span>LARES</span></a>
+    <a class="sidebar-brand" href="<?= $this->url('home') ?>">TUTE<span>LARES</span></a>
 
     <!-- Rol activo -->
     <div class="sidebar-role">
@@ -124,32 +124,32 @@ $roleInfo = $roleLabels[$rol] ?? ['label' => 'Admin', 'icon' => 'bi-person'];
     <?php if ($rol === 'publisher' || $rol === 'super'): ?>
     <div class="sidebar-label">Noticias</div>
     <ul class="sidebar-nav">
-        <li><a href="/medio-comunicacion/public/admin/publisher"><i class="bi bi-newspaper"></i> Mis Noticias</a></li>
-        <li><a href="/medio-comunicacion/public/admin/publisher/crear"><i class="bi bi-plus-square"></i> Nueva Noticia</a></li>
+        <li><a href="<?= $this->url('admin-publisher') ?>"><i class="bi bi-newspaper"></i> Mis Noticias</a></li>
+        <li><a href="<?= $this->url('admin-publisher', ['action' => 'crear']) ?>"><i class="bi bi-plus-square"></i> Nueva Noticia</a></li>
     </ul>
     <?php endif; ?>
 
     <?php if ($rol === 'radio' || $rol === 'super'): ?>
     <div class="sidebar-label">Radio</div>
     <ul class="sidebar-nav">
-        <li><a href="/medio-comunicacion/public/admin/radio-panel"><i class="bi bi-broadcast"></i> Programación</a></li>
+        <li><a href="<?= $this->url('admin-radio') ?>"><i class="bi bi-broadcast"></i> Programación</a></li>
     </ul>
     <?php endif; ?>
 
     <?php if ($rol === 'super'): ?>
     <div class="sidebar-label">Administración</div>
     <ul class="sidebar-nav">
-        <li><a href="/medio-comunicacion/public/admin/super"><i class="bi bi-speedometer2"></i> Dashboard Global</a></li>
+        <li><a href="<?= $this->url('admin-super') ?>"><i class="bi bi-speedometer2"></i> Dashboard Global</a></li>
     </ul>
     <?php endif; ?>
 
     <div class="sidebar-label">Portal</div>
     <ul class="sidebar-nav">
-        <li><a href="/medio-comunicacion/public/" target="_blank"><i class="bi bi-globe"></i> Ver Portal</a></li>
+        <li><a href="<?= $this->url('home') ?>" target="_blank"><i class="bi bi-globe"></i> Ver Portal</a></li>
     </ul>
 
     <div class="sidebar-footer">
-        <a href="/medio-comunicacion/public/admin/logout">
+        <a href="<?= $this->url('admin-logout') ?>">
             <i class="bi bi-box-arrow-left"></i> Cerrar Sesión (<?= htmlspecialchars($usuario) ?>)
         </a>
     </div>

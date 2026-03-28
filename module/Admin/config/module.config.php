@@ -53,6 +53,19 @@ return [
                 ],
             ],
 
+            // ── NOTICIA (Panel Global o Legacy) ─────────────────────────
+            'admin-noticia' => [
+                'type' => Segment::class,
+                'options' => [
+                    'route' => '/admin/noticia[/:action[/:id]]',
+                    'constraints' => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
+                    'defaults' => [
+                        'controller' => Controller\NoticiaAdminController::class,
+                        'action' => 'index',
+                    ],
+                ],
+            ],
+
             // ── Ruta legacy /admin (redirige al login) ───────────────────
             'admin' => [
                 'type' => Literal::class ,
@@ -81,6 +94,23 @@ return [
         'template_map' => [
             'layout/admin' => __DIR__ . '/../view/layout/admin.phtml',
             'layout/admin-login' => __DIR__ . '/../view/layout/admin-login.phtml',
+        ],
+    ],
+
+    'service_manager' => [
+        'factories' => [
+            Service\SocialMediaService::class => Service\Factory\SocialMediaServiceFactory::class,
+        ],
+    ],
+
+    'social_media' => [
+        'facebook' => [
+            'page_id'      => getenv('FB_PAGE_ID') ?: '',
+            'access_token' => getenv('FB_ACCESS_TOKEN') ?: '',
+        ],
+        'instagram' => [
+            'user_id'      => getenv('IG_USER_ID') ?: '',
+            'access_token' => getenv('IG_ACCESS_TOKEN') ?: '',
         ],
     ],
 

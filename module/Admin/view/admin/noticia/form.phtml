@@ -5,7 +5,10 @@ $this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
 ?>
 
 <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
-    <a href="/medio-comunicacion/public/admin/noticia" class="btn btn-outline btn-sm">
+    <?php 
+    $backRoute = (($_SESSION['admin_role'] ?? '') === 'publisher') ? 'admin-publisher' : 'admin-noticia';
+    ?>
+    <a href="<?= $this->url($backRoute) ?>" class="btn btn-outline btn-sm">
         <i class="bi bi-arrow-left"></i>
     </a>
     <h1 style="font-size:1.4rem;font-weight:800;">
@@ -19,7 +22,7 @@ $this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
 </div>
 <?php endif; ?>
 
-<form method="post" action="">
+<form method="post" action="" id="noticia-form" onsubmit="return validateAntesDePublicar()">
     <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;align-items:start;">
 
         <!-- Columna principal -->
@@ -45,6 +48,86 @@ $this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
                         <textarea id="contenido" name="contenido" class="form-control" rows="10"
                                   placeholder="Contenido completo de la noticia..."><?= htmlspecialchars($n['contenido'] ?? '') ?></textarea>
                     </div>
+                </div>
+            </div>
+
+            <!-- VISTA PREVIA DINÁMICA (Dentro de la columna principal) -->
+            <div class="card" style="margin-top: 1rem;">
+                <div class="card-header" style="background: #fcfcfc;">
+                    <h2 style="display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="bi bi-eye" style="color: var(--accent);"></i> Vista Previa
+                    </h2>
+                    <div class="preview-tabs" style="display: flex; gap: 0.5rem;">
+                        <button type="button" class="preview-tab active" onclick="showPreview('web')">Web</button>
+                        <button type="button" class="preview-tab" onclick="showPreview('fb')">FB</button>
+                        <button type="button" class="preview-tab" onclick="showPreview('ig')">IG</button>
+                    </div>
+                </div>
+                <div class="card-body preview-body-container">
+                    
+                    <!-- Preview Web -->
+                    <div id="preview-web" class="preview-container active">
+                        <div class="web-mockup">
+                            <div class="web-card">
+                                <div class="web-img"><img id="view-web-img" src="" alt=""></div>
+                                <div class="web-body">
+                                    <span class="web-cat" id="view-web-cat">General</span>
+                                    <h3 class="web-title" id="view-web-title">Título de la noticia</h3>
+                                    <p class="web-resumen" id="view-web-resumen">Aquí aparecerá el resumen de tu noticia tal como se verá en el portal...</p>
+                                    <div class="web-meta">
+                                        <span id="view-web-autor">Por: Redacción</span>
+                                        <span>Hoy</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Facebook -->
+                    <div id="preview-fb" class="preview-container">
+                        <div class="fb-post">
+                            <div class="fb-header">
+                                <div class="fb-avatar">T</div>
+                                <div>
+                                    <div class="fb-name">TUTELARES</div>
+                                    <div class="fb-time">Justo ahora · <i class="bi bi-globe-americas"></i></div>
+                                </div>
+                            </div>
+                            <div class="fb-message" id="view-fb-message">Escribe algo...</div>
+                            <div class="fb-content">
+                                <img id="view-fb-img" src="" alt="">
+                                <div class="fb-meta">
+                                    <div class="fb-domain">TUTELARES.CL</div>
+                                    <div class="fb-title" id="view-fb-title">Título de la noticia</div>
+                                </div>
+                            </div>
+                            <div class="fb-actions">
+                                <span><i class="bi bi-hand-thumbs-up"></i></span>
+                                <span><i class="bi bi-chat"></i></span>
+                                <span><i class="bi bi-share"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Instagram -->
+                    <div id="preview-ig" class="preview-container">
+                        <div class="ig-post">
+                            <div class="ig-header">
+                                <div class="ig-avatar"></div>
+                                <div class="ig-name">tutelares</div>
+                            </div>
+                            <div class="ig-img"><img id="view-ig-img" src="" alt=""></div>
+                            <div class="ig-actions">
+                                <i class="bi bi-heart"></i>
+                                <i class="bi bi-chat"></i>
+                                <i class="bi bi-send"></i>
+                            </div>
+                            <div class="ig-caption" style="padding-top: 0;">
+                                <span id="view-ig-caption">Tu mensaje aquí...</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -83,6 +166,27 @@ $this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
                 </div>
             </div>
 
+            <?php if (!$esEdicion): ?>
+            <div class="card">
+                <div class="card-header"><h2>Redes Sociales</h2></div>
+                <div class="card-body">
+                    <p style="font-size: 0.8rem; color: #888; margin-bottom: 1rem;">Publicar automáticamente en:</p>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                        <input type="checkbox" id="post_facebook" name="post_facebook" value="1" style="width: 18px; height: 18px; cursor: pointer;">
+                        <label class="form-label" for="post_facebook" style="margin-bottom: 0; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="bi bi-facebook" style="color: #1877F2; font-size: 1.1rem;"></i> Facebook Page
+                        </label>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0;">
+                        <input type="checkbox" id="post_instagram" name="post_instagram" value="1" style="width: 18px; height: 18px; cursor: pointer;">
+                        <label class="form-label" for="post_instagram" style="margin-bottom: 0; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+                            <i class="bi bi-instagram" style="color: #E4405F; font-size: 1.1rem;"></i> Instagram Account
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
+
             <div class="card">
                 <div class="card-header"><h2>Imagen Destacada</h2></div>
                 <div class="card-body">
@@ -102,3 +206,146 @@ $this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
 
     </div>
 </form>
+
+<style>
+    /* Layout Responsive */
+    @media (max-width: 991px) {
+        form > div { grid-template-columns: 1fr !important; }
+    }
+
+    /* Vista Previa Container */
+    .preview-body-container { 
+        background: #f0f2f5; 
+        min-height: 480px; 
+        display: flex; 
+        justify-content: center; 
+        padding: 1.5rem; 
+        border-radius: 0 0 12px 12px;
+    }
+
+    /* Tabs Styles */
+    .preview-tab {
+        padding: 0.4rem 0.8rem;
+        border-radius: 6px;
+        border: 1px solid #ddd;
+        background: #fff;
+        font-size: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .preview-tab.active {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+    }
+    .preview-container { display: none; width: 100%; max-width: 440px; margin: auto; }
+    .preview-container.active { display: block; }
+
+    /* Web Mockup */
+    .web-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    .web-img { width: 100%; aspect-ratio: 16/9; background: #eee; overflow: hidden; }
+    .web-img img { width: 100%; height: 100%; object-fit: cover; }
+    .web-body { padding: 1.25rem; }
+    .web-cat { background: var(--accent); color: #fff; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 4px; text-transform: uppercase; }
+    .web-title { font-family: 'Syne', sans-serif; margin-top: 0.5rem; font-size: 1.15rem; line-height: 1.3; }
+    .web-resumen { color: #666; font-size: 0.82rem; line-height: 1.5; margin-top: 0.5rem; }
+    .web-meta { margin-top: 1rem; display: flex; justify-content: space-between; font-size: 0.7rem; color: #999; border-top: 1px solid #eee; padding-top: 0.5rem; }
+
+    /* FB Mockup */
+    .fb-post { background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); width: 100%; }
+    .fb-header { padding: 10px; display: flex; gap: 8px; }
+    .fb-avatar { width: 36px; height: 36px; border-radius: 50%; background: #0566FF; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+    .fb-name { font-weight: 700; font-size: 0.88rem; }
+    .fb-time { color: #65676b; font-size: 0.75rem; }
+    .fb-message { padding: 0 10px 10px; font-size: 0.88rem; white-space: pre-wrap; }
+    .fb-content { background: #f0f2f5; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; }
+    .fb-content img { width: 100%; background: #ddd; display: block; }
+    .fb-meta { padding: 8px 10px; background: #f0f2f5; }
+    .fb-domain { font-size: 0.7rem; color: #65676b; text-transform: uppercase; }
+    .fb-title { font-weight: 600; font-size: 0.95rem; margin-top: 2px; }
+    .fb-actions { padding: 4px; display: flex; border-top: 1px solid #eee; justify-content: space-around; color: #65676b; font-size: 1rem; }
+
+    /* IG Mockup */
+    .ig-post { background: #fff; border: 1px solid #dbdbdb; border-radius: 3px; width: 100%; margin: auto; }
+    .ig-header { padding: 10px; display: flex; align-items: center; gap: 8px; }
+    .ig-avatar { width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+    .ig-name { font-weight: 600; font-size: 0.82rem; }
+    .ig-img { width: 100%; aspect-ratio: 1/1; background: #fafafa; overflow: hidden; }
+    .ig-img img { width: 100%; height: 100%; object-fit: cover; }
+    .ig-actions { padding: 10px; display: flex; gap: 14px; font-size: 1.25rem; }
+    .ig-caption { padding: 0 10px 12px; font-size: 0.82rem; line-height: 1.4; }
+</style>
+
+<script>
+    function validateAntesDePublicar() {
+        const title   = document.getElementById('titulo').value.trim();
+        const resumen = document.getElementById('resumen').value.trim();
+        const content = document.getElementById('contenido').value.trim();
+        const img     = document.getElementById('imagen').value.trim();
+        const fbCheck = document.getElementById('post_facebook');
+        const igCheck = document.getElementById('post_instagram');
+        
+        const isEdicion = "<?= $esEdicion ?>";
+        let warnings = [];
+
+        // 1. Validar campos básicos (aparte de 'required' de HTML5)
+        if (!title || !resumen || !content || !img) {
+            warnings.push("● Hay campos en blanco (Título, Resumen, Contenido o Imagen).");
+        }
+
+        // 2. Validar social media solo si es creación
+        if (!isEdicion) {
+            if ((!fbCheck || !fbCheck.checked) && (!igCheck || !igCheck.checked)) {
+                warnings.push("● No has seleccionado publicar en redes sociales (Facebook/Instagram).");
+            }
+        }
+
+        if (warnings.length > 0) {
+            const msg = "ADVERTENCIA ANTES DE PUBLICAR:\n\n" + 
+                        warnings.join("\n") + 
+                        "\n\n¿Estás seguro de que deseas publicar la noticia con estas condiciones?";
+            return confirm(msg);
+        }
+
+        return true;
+    }
+
+    function showPreview(type) {
+        document.querySelectorAll('.preview-container').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.preview-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('preview-' + type).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    function updatePreview() {
+        const title   = document.getElementById('titulo').value || 'Título de la noticia';
+        const resumen = document.getElementById('resumen').value || 'Resumen breve de la noticia...';
+        const img     = document.getElementById('imagen').value || 'https://via.placeholder.com/600x400?text=Imagen+Noticia';
+        const cat     = document.getElementById('categoria').value;
+        const autor   = document.getElementById('autor').value || 'Redacción';
+
+        // Web
+        document.getElementById('view-web-title').innerText = title;
+        document.getElementById('view-web-resumen').innerText = resumen;
+        document.getElementById('view-web-img').src = img;
+        document.getElementById('view-web-cat').innerText = cat;
+        document.getElementById('view-web-autor').innerText = 'Por: ' + autor;
+
+        // FB
+        document.getElementById('view-fb-title').innerText = title;
+        document.getElementById('view-fb-message').innerText = title + "\n\n" + resumen;
+        document.getElementById('view-fb-img').src = img;
+
+        // IG
+        document.getElementById('view-ig-img').src = img;
+        document.getElementById('view-ig-caption').innerText = title + ": " + resumen;
+    }
+
+    ['titulo', 'resumen', 'contenido', 'imagen', 'categoria', 'autor'].forEach(id => {
+        const el = document.getElementById(id);
+        if(el) el.addEventListener('input', updatePreview);
+    });
+
+    updatePreview();
+</script>

@@ -1,5 +1,5 @@
 <?php
-namespace Admin\Model;
+namespace Noticia\Model;
 
 class NoticiaTable
 {

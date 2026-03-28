@@ -2,7 +2,7 @@
 
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;">
     <h1 style="font-size:1.4rem;font-weight:800;">Noticias</h1>
-    <a href="/medio-comunicacion/public/admin/noticia/crear" class="btn btn-primary">
+    <a href="<?= $this->url('admin-noticia', ['action' => 'crear']) ?>" class="btn btn-primary">
         <i class="bi bi-plus-lg"></i> Nueva Noticia
     </a>
 </div>
@@ -15,7 +15,7 @@
                 <i class="bi bi-inbox" style="font-size:2.5rem;display:block;margin-bottom:1rem;"></i>
                 No hay noticias publicadas todavía.
                 <br><br>
-                <a href="/medio-comunicacion/public/admin/noticia/crear" class="btn btn-primary">Crear primera noticia</a>
+                <a href="<?= $this->url('admin-noticia', ['action' => 'crear']) ?>" class="btn btn-primary">Crear primera noticia</a>
             </div>
         <?php else: ?>
         <table class="table">
@@ -45,12 +45,12 @@
                         <?= date('d/m/Y', strtotime($n['creado_en'])) ?>
                     </td>
                     <td>
-                        <a href="/medio-comunicacion/public/admin/noticia/editar/<?= $n['id'] ?>"
+                        <a href="<?= $this->url('admin-noticia', ['action' => 'editar', 'id' => $n['id']]) ?>"
                            class="btn btn-sm btn-outline" title="Editar">
                             <i class="bi bi-pencil"></i>
                         </a>
                         &nbsp;
-                        <a href="/medio-comunicacion/public/admin/noticia/eliminar/<?= $n['id'] ?>"
+                        <a href="<?= $this->url('admin-noticia', ['action' => 'eliminar', 'id' => $n['id']]) ?>"
                            class="btn btn-sm btn-danger" title="Eliminar"
                            onclick="return confirm('¿Estás seguro de eliminar esta noticia?')">
                             <i class="bi bi-trash"></i>

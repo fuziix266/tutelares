@@ -3,15 +3,17 @@ namespace Admin\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
-use Admin\Model\NoticiaTable;
+use Noticia\Model\NoticiaTable;
 
 class PublisherController extends AbstractActionController
 {
     private NoticiaTable $noticiaTable;
+    private \Admin\Service\SocialMediaService $socialMediaService;
 
-    public function __construct(NoticiaTable $noticiaTable)
+    public function __construct(NoticiaTable $noticiaTable, \Admin\Service\SocialMediaService $socialMediaService)
     {
         $this->noticiaTable = $noticiaTable;
+        $this->socialMediaService = $socialMediaService;
     }
 
     public function indexAction()
@@ -35,6 +37,21 @@ class PublisherController extends AbstractActionController
                 $error = 'El título es obligatorio.';
             } else {
                 $this->noticiaTable->insert($data);
+
+                // --- PUBLICAR EN REDES SOCIALES ---
+                $title   = $data['titulo'];
+                $summary = $data['resumen'] ?? substr(strip_tags($data['contenido'] ?? ''), 0, 200);
+                $image   = $data['imagen'] ?? null;
+
+                if (!empty($data['post_facebook'])) {
+                    $this->socialMediaService->postToFacebook($title, $summary, $image);
+                }
+
+                if (!empty($data['post_instagram']) && $image) {
+                    $this->socialMediaService->postToInstagram($title, $summary, $image);
+                }
+                // ----------------------------------
+
                 return $this->redirect()->toRoute('admin-publisher');
             }
         }

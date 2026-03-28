@@ -9,8 +9,16 @@ use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
+    private \Noticia\Model\NoticiaTable $noticiaTable;
+
+    public function __construct(\Noticia\Model\NoticiaTable $noticiaTable)
+    {
+        $this->noticiaTable = $noticiaTable;
+    }
+
     public function indexAction()
     {
-        return new ViewModel();
+        $noticias = $this->noticiaTable->fetchAll();
+        return new ViewModel(['noticias' => $noticias]);
     }
 }
