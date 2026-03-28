@@ -43,6 +43,11 @@ if (! class_exists(Application::class)) {
 }
 
 $container = require __DIR__ . '/../config/container.php';
+echo "DEBUG DB_HOST: " . getenv('DB_HOST') . " | ";
+if (file_exists(__DIR__ . '/../.env')) echo ".env exists | ";
+$lines = file(__DIR__ . '/../.env');
+foreach($lines as $l) echo "ENV LINE: $l | ";
+exit;
 // Run the application!
 /** @var Application $app */
 $app = $container->get('Application');
