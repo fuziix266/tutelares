@@ -46,10 +46,14 @@ return [
 
             // ── SUPER USUARIO ────────────────────────────────────────────
             'admin-super' => [
-                'type' => Literal::class ,
+                'type' => Segment::class ,
                 'options' => [
-                    'route' => '/admin/super',
-                    'defaults' => ['controller' => Controller\SuperController::class , 'action' => 'index'],
+                    'route' => '/admin/super[/:action[/:id]]',
+                    'constraints' => ['action' => '[a-zA-Z][a-zA-Z0-9_-]*', 'id' => '[0-9]+'],
+                    'defaults' => [
+                        'controller' => Controller\SuperController::class ,
+                        'action' => 'index',
+                    ],
                 ],
             ],
 
@@ -100,6 +104,8 @@ return [
     'service_manager' => [
         'factories' => [
             Service\SocialMediaService::class => Service\Factory\SocialMediaServiceFactory::class,
+            Model\UsuarioTable::class         => Model\Factory\UsuarioTableFactory::class,
+            Model\ConfigTable::class          => Model\Factory\ConfigTableFactory::class,
         ],
     ],
 

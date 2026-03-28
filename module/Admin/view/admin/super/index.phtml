@@ -29,16 +29,18 @@
         </div>
         <div>
             <div class="stat-label">Usuarios del sistema</div>
-            <div class="stat-value">3</div>
+            <div class="stat-value"><?= $totalUsuarios ?></div>
         </div>
     </div>
     <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(40,167,69,0.1);color:#28a745;">
-            <i class="bi bi-globe"></i>
+        <div class="stat-icon" style="background:<?= $portalStatus === 'activo' ? 'rgba(40,167,69,0.1)' : 'rgba(255,193,7,0.1)' ?>;color:<?= $portalStatus === 'activo' ? '#28a745' : '#ffc107' ?>;">
+            <i class="bi <?= $portalStatus === 'activo' ? 'bi-globe' : 'bi-pause-circle' ?>"></i>
         </div>
-        <div>
+        <div style="flex:1;">
             <div class="stat-label">Estado del portal</div>
-            <div class="stat-value" style="font-size:1rem;color:#28a745;">● Activo</div>
+            <div class="stat-value" style="font-size:1rem;color:<?= $portalStatus === 'activo' ? '#28a745' : '#ffc107' ?>;">
+                <?= $portalStatus === 'activo' ? '● Activo' : '● Stand By' ?>
+            </div>
         </div>
     </div>
 </div>
@@ -49,9 +51,11 @@
     <div class="card">
         <div class="card-header">
             <h2><i class="bi bi-newspaper" style="color:var(--accent);margin-right:.5rem;"></i> Últimas Noticias</h2>
-            <a href="<?= $this->url('admin-publisher') ?>" class="btn btn-sm btn-outline">
-                <i class="bi bi-pencil"></i> Ir al Publisher
-            </a>
+            <div style="display:flex;gap:.5rem;">
+                <a href="<?= $this->url('admin-publisher') ?>" class="btn btn-sm btn-outline">
+                    <i class="bi bi-pencil"></i> Ir al Publisher
+                </a>
+            </div>
         </div>
         <div class="card-body" style="padding:0;">
             <table class="table">
@@ -59,14 +63,18 @@
                     <tr><th>ID</th><th>Título</th><th>Categoría</th><th>Fecha</th></tr>
                 </thead>
                 <tbody>
-                    <?php foreach (array_slice($noticias, 0, 8) as $n): ?>
-                    <tr>
-                        <td style="color:#999;font-size:.8rem;">#<?= $n['id'] ?></td>
-                        <td><strong><?= htmlspecialchars($n['titulo']) ?></strong></td>
-                        <td><span class="badge badge-pink"><?= htmlspecialchars($n['categoria']) ?></span></td>
-                        <td style="font-size:.8rem;color:#999;"><?= date('d/m/Y', strtotime($n['creado_en'])) ?></td>
-                    </tr>
-                    <?php endforeach; ?>
+                    <?php if (count($noticias) > 0): ?>
+                        <?php foreach (array_slice($noticias, 0, 8) as $n): ?>
+                        <tr>
+                            <td style="color:#999;font-size:.8rem;">#<?= $n['id'] ?></td>
+                            <td><strong><?= htmlspecialchars($n['titulo']) ?></strong></td>
+                            <td><span class="badge badge-pink"><?= htmlspecialchars($n['categoria']) ?></span></td>
+                            <td style="font-size:.8rem;color:#999;"><?= date('d/m/Y', strtotime($n['creado_en'])) ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr><td colspan="4" style="text-align:center;padding:1.5rem;color:#999;">No hay noticias aún.</td></tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
@@ -76,38 +84,34 @@
     <div style="display:flex;flex-direction:column;gap:1.25rem;">
 
         <div class="card">
-            <div class="card-header"><h2><i class="bi bi-lightning" style="color:var(--accent);margin-right:.5rem;"></i> Accesos Rápidos</h2></div>
+            <div class="card-header"><h2><i class="bi bi-lightning" style="color:var(--accent);margin-right:.5rem;"></i> Gestión de Usuarios</h2></div>
             <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem;">
-                <a href="<?= $this->url('admin-publisher') ?>" class="btn btn-outline" style="justify-content:flex-start;">
-                    <i class="bi bi-newspaper"></i> Panel Publisher
+                <a href="<?= $this->url('admin-super', ['action' => 'saveUsuario']) ?>" class="btn btn-pink" style="justify-content:center;">
+                    <i class="bi bi-person-plus-fill"></i> Crear Nuevo Usuario
                 </a>
-                <a href="<?= $this->url('admin-radio') ?>" class="btn btn-outline" style="justify-content:flex-start;">
-                    <i class="bi bi-broadcast"></i> Panel Radio
-                </a>
-                <a href="<?= $this->url('home') ?>" target="_blank" class="btn btn-outline" style="justify-content:flex-start;">
-                    <i class="bi bi-globe"></i> Ver Portal
+                <a href="<?= $this->url('admin-super', ['action' => 'usuarios']) ?>" class="btn btn-outline" style="justify-content:center;">
+                    <i class="bi bi-people-fill"></i> Administrar Cuentas
                 </a>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-header"><h2><i class="bi bi-people" style="color:var(--accent);margin-right:.5rem;"></i> Usuarios del Sistema</h2></div>
+            <div class="card-header"><h2><i class="bi bi-people" style="color:var(--accent);margin-right:.5rem;"></i> Usuarios Recientes</h2></div>
             <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem;">
+                <?php foreach (array_slice($usuarios, 0, 5) as $u): ?>
                 <div style="display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;background:#f9f9f9;border-radius:8px;">
-                    <div style="width:32px;height:32px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;">PB</div>
-                    <div><div style="font-weight:600;font-size:.88rem;">Publisher</div><div style="font-size:.75rem;color:#888;">Redactor de noticias</div></div>
-                    <span class="badge badge-pink" style="margin-left:auto;">publisher</span>
+                    <div style="width:32px;height:32px;border-radius:50%;background:<?= $u['rol'] === 'super' ? '#111' : ($u['rol'] === 'publisher' ? 'var(--accent)' : '#007bff') ?>;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;">
+                        <?= strtoupper(substr($u['usuario'], 0, 2)) ?>
+                    </div>
+                    <div style="overflow:hidden;">
+                        <div style="font-weight:600;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?= htmlspecialchars($u['nombre'] ?: $u['usuario']) ?></div>
+                        <div style="font-size:.75rem;color:#888;"><?= htmlspecialchars($u['usuario']) ?></div>
+                    </div>
+                    <span class="badge" style="margin-left:auto;<?= $u['rol'] === 'super' ? 'background:rgba(0,0,0,.08);color:#111;' : ($u['rol'] === 'publisher' ? 'background:rgba(255,28,92,0.12);color:var(--accent);' : 'background:rgba(0,123,255,.12);color:#007bff;') ?>">
+                        <?= htmlspecialchars($u['rol']) ?>
+                    </span>
                 </div>
-                <div style="display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;background:#f9f9f9;border-radius:8px;">
-                    <div style="width:32px;height:32px;border-radius:50%;background:#007bff;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;">RD</div>
-                    <div><div style="font-weight:600;font-size:.88rem;">Radio</div><div style="font-size:.75rem;color:#888;">Administrador de radio</div></div>
-                    <span class="badge" style="background:rgba(0,123,255,.12);color:#007bff;margin-left:auto;">radio</span>
-                </div>
-                <div style="display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;background:#f9f9f9;border-radius:8px;">
-                    <div style="width:32px;height:32px;border-radius:50%;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:800;flex-shrink:0;">SU</div>
-                    <div><div style="font-weight:600;font-size:.88rem;">SuperUsuario</div><div style="font-size:.75rem;color:#888;">Acceso total al sistema</div></div>
-                    <span class="badge" style="background:rgba(0,0,0,.08);color:#111;margin-left:auto;">super</span>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
 

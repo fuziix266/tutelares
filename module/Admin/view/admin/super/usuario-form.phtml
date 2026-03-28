@@ -1,0 +1,54 @@
+<?php $this->headTitle($usuario ? 'Editar Usuario' : 'Crear Usuario'); ?>
+
+<div style="margin-bottom:1.5rem;">
+    <h1 style="font-size:1.5rem;font-weight:800;"><?= $usuario ? 'Editar Usuario' : 'Crear Nuevo Usuario' ?></h1>
+    <p style="color:#888;font-size:.9rem;margin-top:.2rem;">Configura los datos del usuario para el sistema</p>
+</div>
+
+<div class="card" style="max-width:600px;">
+    <div class="card-body">
+        <form action="<?= $this->url('admin-super', ['action' => 'saveUsuario']) ?>" method="POST">
+            <?php if ($usuario): ?>
+                <input type="hidden" name="id" value="<?= $usuario['id'] ?>">
+            <?php endif; ?>
+
+            <div class="form-group">
+                <label for="usuario" class="form-label">Usuario (para login)</label>
+                <input type="text" id="usuario" name="usuario" class="form-control" required value="<?= htmlspecialchars($usuario['usuario'] ?? '') ?>" placeholder="Ej: JUAN2026">
+            </div>
+
+            <div class="form-group">
+                <label for="nombre" class="form-label">Nombre Completo</label>
+                <input type="text" id="nombre" name="nombre" class="form-control" value="<?= htmlspecialchars($usuario['nombre'] ?? '') ?>" placeholder="Ej: Juan Pérez">
+            </div>
+
+            <div class="form-group">
+                <label for="imagen" class="form-label">Imagen (URL Avatar)</label>
+                <input type="text" id="imagen" name="imagen" class="form-control" value="<?= htmlspecialchars($usuario['imagen'] ?? '') ?>" placeholder="https://ejemplo.com/avatar.jpg">
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Contraseña</label>
+                <input type="password" id="password" name="password" class="form-control" required value="<?= htmlspecialchars($usuario['password'] ?? '') ?>">
+                <small style="color:#888;font-size:.7rem;">Por ahora el sistema utiliza contraseñas directas.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="rol" class="form-label">Rol del Usuario</label>
+                <select id="rol" name="rol" class="form-control" required>
+                    <option value="">Seleccionar rol...</option>
+                    <option value="publisher" <?= ($usuario['rol'] ?? '') === 'publisher' ? 'selected' : '' ?>>PUBLISHER (Editor de noticias)</option>
+                    <option value="radio" <?= ($usuario['rol'] ?? '') === 'radio' ? 'selected' : '' ?>>RADIO (Administrador de radio)</option>
+                    <option value="super" <?= ($usuario['rol'] ?? '') === 'super' ? 'selected' : '' ?>>SUPER (Acceso total)</option>
+                </select>
+            </div>
+
+            <div style="display:flex;gap:1rem;margin-top:1.5rem;">
+                <button type="submit" class="btn btn-pink">
+                    <i class="bi bi-save"></i> <?= $usuario ? 'Guardar Cambios' : 'Crear Usuario' ?>
+                </button>
+                <a href="<?= $this->url('admin-super', ['action' => 'usuarios']) ?>" class="btn btn-outline">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>

@@ -9,6 +9,6 @@ class AuthControllerFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): AuthController
     {
-        return new AuthController();
+        return new AuthController($container->get(\Admin\Model\UsuarioTable::class));
     }
 }

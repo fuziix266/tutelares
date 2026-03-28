@@ -1,0 +1,40 @@
+<?php
+/** @var string $status */
+/** @var string $message */
+?>
+<div class="container" style="max-width:900px;margin:auto;padding:2rem;">
+    <div class="card shadow" style="border-radius:12px;overflow:hidden;">
+        <div class="card-header bg-dark text-white d-flex align-items-center" style="background:linear-gradient(135deg, #111 0%, #222 100%);">
+            <h2 class="mb-0" style="font-weight:800;">Gestión del Estado del Portal</h2>
+        </div>
+        <div class="card-body" style="background:#0f0f14;color:#eee;">
+            <p class="mb-3">Estado actual: <span class="badge <?= $status === 'activo' ? 'bg-success' : 'bg-warning text-dark' ?>"><?= $status === 'activo' ? 'Activo' : 'Stand By' ?></span></p>
+            <form method="post" action="<?= $this->url('admin-super', ['action' => 'saveEstado']) ?>" class="mt-4">
+                <div class="mb-3">
+                    <label for="status" class="form-label">Cambiar Estado</label>
+                    <select name="status" id="status" class="form-select" style="width:auto;">
+                        <option value="activo" <?= $status === 'activo' ? 'selected' : '' ?>>Activo</option>
+                        <option value="standby" <?= $status === 'standby' ? 'selected' : '' ?>>Stand By</option>
+                    </select>
+                </div>
+                <div class="mb-3" id="msg-block">
+                    <label for="message" class="form-label">Mensaje de Mantenimiento</label>
+                    <textarea name="message" id="message" rows="4" class="form-control" placeholder="Escribe el mensaje que verán los usuarios..."><?= htmlspecialchars($message) ?></textarea>
+                    <small class="form-text text-muted">Este mensaje aparecerá en la página temporal cuando el portal esté en modo Stand By.</small>
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // Mostrar/ocultar el textarea al cambiar el selector
+    document.getElementById('status').addEventListener('change', function(){
+        var msgBlock = document.getElementById('msg-block');
+        if(this.value === 'activo'){
+            if(msgBlock) msgBlock.style.display = 'none';
+        } else {
+            if(msgBlock) msgBlock.style.display = 'block';
+        }
+    });
+</script>

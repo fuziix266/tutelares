@@ -140,6 +140,8 @@ $roleInfo = $roleLabels[$rol] ?? ['label' => 'Admin', 'icon' => 'bi-person'];
     <div class="sidebar-label">Administración</div>
     <ul class="sidebar-nav">
         <li><a href="<?= $this->url('admin-super') ?>"><i class="bi bi-speedometer2"></i> Dashboard Global</a></li>
+        <li><a href="<?= $this->url('admin-super', ['action' => 'usuarios']) ?>"><i class="bi bi-people"></i> Usuarios y Cuentas</a></li>
+        <li><a href="<?= $this->url('admin-super', ['action' => 'estado']) ?>"><i class="bi bi-exclamation-triangle"></i> Estado de WebSite</a></li>
     </ul>
     <?php endif; ?>
 
@@ -160,7 +162,11 @@ $roleInfo = $roleLabels[$rol] ?? ['label' => 'Admin', 'icon' => 'bi-person'];
     <header class="topbar">
         <span class="topbar-title"><?= $this->headTitle() ?: 'Panel Admin' ?></span>
         <div class="topbar-user">
-            <div class="avatar"><?= $initials ?></div>
+            <?php if (!empty($_SESSION['admin_avatar'])): ?>
+                <img src="<?= htmlspecialchars($_SESSION['admin_avatar']) ?>" alt="Avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;">
+            <?php else: ?>
+                <div class="avatar"><?= $initials ?></div>
+            <?php endif; ?>
             <span><?= htmlspecialchars($usuario) ?></span>
         </div>
     </header>

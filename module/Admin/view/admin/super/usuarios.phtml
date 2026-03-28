@@ -1,0 +1,91 @@
+<?php $this->headTitle('Gestión de Usuarios'); ?>
+
+<div style="margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center;">
+    <div>
+        <h1 style="font-size:1.5rem;font-weight:800;">Gestión de Cuentas</h1>
+        <p style="color:#888;font-size:.9rem;margin-top:.2rem;">Administra los accesos al panel de control</p>
+    </div>
+    <a href="<?= $this->url('admin-super', ['action' => 'saveUsuario']) ?>" class="btn btn-pink">
+        <i class="bi bi-person-plus-fill"></i> Crear Usuario
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body" style="padding:0;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Avatar</th>
+                    <th>Usuario</th>
+                    <th>Nombre Completo</th>
+                    <th>Contraseña</th>
+                    <th>Rol</th>
+                    <th style="text-align:right;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($usuarios as $u): ?>
+                <tr>
+                    <td>
+                        <?php if ($u['imagen']): ?>
+                            <img src="<?= htmlspecialchars($u['imagen']) ?>" alt="Avatar" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:1px solid #ddd;">
+                        <?php else: ?>
+                            <div style="width:36px;height:36px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;color:#999;font-size:1.2rem;">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                        <?php endif; ?>
+                    </td>
+                    <td><strong><?= htmlspecialchars($u['usuario']) ?></strong></td>
+                    <td><?= htmlspecialchars($u['nombre'] ?: '---') ?></td>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:.5rem;">
+                            <span class="pass-text" data-pass="<?= htmlspecialchars($u['password']) ?>" style="font-family:monospace;background:#f0f0f0;padding:.2rem .4rem;border-radius:4px;color:#777;">••••••••</span>
+                            <button type="button" class="btn-toggle-pass" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:1.1rem;padding:0;" title="Ver/Ocultar">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge" style="<?= $u['rol'] === 'super' ? 'background:rgba(0,0,0,.08);color:#111;' : ($u['rol'] === 'publisher' ? 'background:rgba(255,28,92,0.12);color:var(--accent);' : 'background:rgba(0,123,255,.12);color:#007bff;') ?>">
+                            <?= htmlspecialchars($u['rol']) ?>
+                        </span>
+                    </td>
+<script>
+document.querySelectorAll('.btn-toggle-pass').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const span = this.parentElement.querySelector('.pass-text');
+        const icon = this.querySelector('i');
+        if (span.innerText === '••••••••') {
+            span.innerText = span.getAttribute('data-pass');
+            icon.className = 'bi bi-eye-slash';
+        } else {
+            span.innerText = '••••••••';
+            icon.className = 'bi bi-eye';
+        }
+    });
+});
+</script>
+                    <td style="text-align:right;">
+                        <div style="display:flex;justify-content:flex-end;gap:.5rem;">
+                            <a href="<?= $this->url('admin-super', ['action' => 'saveUsuario', 'id' => $u['id']]) ?>" class="btn btn-sm btn-outline" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <?php if ($u['id'] > 1): ?>
+                            <a href="<?= $this->url('admin-super', ['action' => 'deleteUsuario', 'id' => $u['id']]) ?>" class="btn btn-sm btn-outline" style="color:red;" onclick="return confirm('¿Estás seguro de eliminar este usuario?');" title="Eliminar">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                            <?php endif; ?>
+                        </div>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="margin-top:1.5rem;">
+    <a href="<?= $this->url('admin-super') ?>" class="btn btn-outline">
+        <i class="bi bi-arrow-left"></i> Volver al Dashboard
+    </a>
+</div>
