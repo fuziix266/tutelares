@@ -141,7 +141,7 @@ $this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
                         <label class="form-label" for="categoria">Categoría</label>
                         <select id="categoria" name="categoria" class="form-select">
                             <?php
-                            $cats = ['General', 'Política', 'Economía', 'Deportes', 'Cultura', 'Sociedad', 'Tecnología', 'Internacional', 'Salud'];
+                            $cats = ['General', 'Política', 'Economía', 'Deportes', 'Cultura', 'Sociedad', 'Tecnología', 'Internacional', 'Salud', 'Religión', 'Policial'];
                             foreach ($cats as $cat):
                                 $sel = ($n['categoria'] ?? '') === $cat ? 'selected' : '';
                             ?>

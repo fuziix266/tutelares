@@ -5,3 +5,23 @@ services:
       - "8080:80"
     volumes:
       - .:/var/www
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: tutelares-mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: tutelares
+      MYSQL_USER: tutelares_user
+      MYSQL_PASSWORD: TutelaresPass2025
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./data/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:

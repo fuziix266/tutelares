@@ -17,7 +17,7 @@
                         <option value="standby" <?= $status === 'standby' ? 'selected' : '' ?>>Stand By</option>
                     </select>
                 </div>
-                <div class="mb-3" id="msg-block">
+                <div class="mb-3" id="msg-block" style="<?= $status === 'activo' ? 'display:none;' : '' ?>">
                     <label for="message" class="form-label">Mensaje de Mantenimiento</label>
                     <textarea name="message" id="message" rows="4" class="form-control" placeholder="Escribe el mensaje que verán los usuarios..."><?= htmlspecialchars($message) ?></textarea>
                     <small class="form-text text-muted">Este mensaje aparecerá en la página temporal cuando el portal esté en modo Stand By.</small>
