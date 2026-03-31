@@ -1,0 +1,205 @@
+<?php
+/** @var array $noticia */
+$this->headTitle($noticia['titulo']);
+?>
+
+<div class="news-detail-page">
+    <!-- BARRA SUPERIOR DE CATEGORÍA -->
+    <div class="detail-cat-bar">
+        <div class="container">
+            <a href="<?= $this->url('home') ?>" class="back-link"><i class="bi bi-arrow-left"></i> VOLVER</a>
+            <span class="detail-cat-tag"><?= $this->escapeHtml($noticia['categoria']) ?></span>
+        </div>
+    </div>
+
+    <article class="container noticia-completa">
+        <!-- CABECERA -->
+        <header class="detail-header">
+            <h1 class="detail-title"><?= $this->escapeHtml($noticia['titulo']) ?></h1>
+            <div class="detail-meta">
+                <span><i class="bi bi-person"></i> <?= $this->escapeHtml($noticia['autor'] ?: 'REDACCIÓN TUTELARES') ?></span>
+                <span class="sep">|</span>
+                <span><i class="bi bi-calendar3"></i> <?= date('d/m/Y', strtotime($noticia['creado_en'])) ?></span>
+            </div>
+        </header>
+
+        <!-- IMAGEN DESTACADA -->
+        <div class="detail-image-wrapper">
+            <img src="<?= htmlspecialchars($noticia['imagen'] ?: 'https://via.placeholder.com/1200x600?text=Tutelares') ?>" alt="<?= htmlspecialchars($noticia['titulo']) ?>">
+        </div>
+
+        <!-- CUERPO DE LA NOTICIA -->
+        <div class="detail-body">
+            <!-- RESUMEN / SUBTITULO -->
+            <div class="detail-summary">
+                <?= $this->escapeHtml($noticia['resumen']) ?>
+            </div>
+
+            <!-- CONTENIDO TEXTO -->
+            <div class="detail-content">
+                <?= nl2br($this->escapeHtml($noticia['contenido'])) ?>
+            </div>
+        </div>
+
+        <!-- FOOTER DE NOTICIA -->
+        <footer class="detail-footer">
+            <div class="share-box">
+                <span class="share-label">COMPARTIR NOTICIA</span>
+                <div class="share-links">
+                    <a href="#" class="share-btn fb"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="share-btn x"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="share-btn wa"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+        </footer>
+    </article>
+</div>
+
+<style>
+/* ── NEWS DETAIL STYLES (PURE TUTELARES UI) ── */
+.news-detail-page {
+    background: #fff;
+    min-height: 100vh;
+}
+
+.detail-cat-bar {
+    border-bottom: 1px solid #eee;
+    padding: 1rem 0;
+    margin-bottom: 3rem;
+    margin-top: 64px; /* Altura del navbar */
+}
+
+.detail-cat-bar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-link {
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--black);
+    text-transform: uppercase;
+}
+
+.detail-cat-tag {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 8px;
+    font-weight: 800;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.noticia-completa {
+    max-width: 900px !important;
+    margin: 0 auto;
+    padding-bottom: 100px;
+}
+
+.detail-header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.detail-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    color: var(--black);
+}
+
+.detail-meta {
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.detail-meta .sep { margin: 0 1rem; color: #ddd; }
+
+.detail-image-wrapper {
+    margin-bottom: 4rem;
+}
+
+.detail-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: saturate(1.1);
+}
+
+.detail-body {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.detail-summary {
+    font-size: 1.6rem;
+    line-height: 1.35;
+    font-weight: 800;
+    font-family: 'Syne', sans-serif;
+    margin-bottom: 3rem;
+    color: var(--black);
+    position: relative;
+    padding-left: 2rem;
+    border-left: 4px solid var(--accent);
+}
+
+.detail-content {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #333;
+}
+
+.detail-footer {
+    margin-top: 5rem;
+    border-top: 2px solid var(--black);
+    padding-top: 2rem;
+    text-align: center;
+}
+
+.share-label {
+    display: block;
+    font-weight: 800;
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.1em;
+}
+
+.share-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.share-btn {
+    width: 44px;
+    height: 44px;
+    border: 2px solid var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    transition: all 0.2s ease;
+}
+
+.share-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    transform: translateY(-3px);
+}
+
+@media (max-width: 768px) {
+    .detail-cat-bar { margin-top: 0; }
+    .detail-summary { font-size: 1.3rem; }
+}
+</style>

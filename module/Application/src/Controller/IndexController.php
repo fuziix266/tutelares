@@ -18,7 +18,12 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-        $noticias = $this->noticiaTable->fetchAll();
-        return new ViewModel(['noticias' => $noticias]);
+        $ultimaHora = $this->noticiaTable->getUltimaHora();
+        $noticias   = $this->noticiaTable->fetchAll();
+        
+        return new ViewModel([
+            'noticias'    => $noticias,
+            'ultimaHora'  => $ultimaHora
+        ]);
     }
 }

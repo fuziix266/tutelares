@@ -22,7 +22,7 @@ $this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
 </div>
 <?php endif; ?>
 
-<form method="post" action="" id="noticia-form" onsubmit="return validateAntesDePublicar()">
+<form method="post" action="" id="noticia-form">
     <div style="display:grid;grid-template-columns:2fr 1fr;gap:1.5rem;align-items:start;">
 
         <!-- Columna principal -->
@@ -141,13 +141,60 @@ $this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
                         <label class="form-label" for="categoria">Categoría</label>
                         <select id="categoria" name="categoria" class="form-select">
                             <?php
-                            $cats = ['General', 'Política', 'Economía', 'Deportes', 'Cultura', 'Sociedad', 'Tecnología', 'Internacional', 'Salud', 'Religión', 'Policial'];
-                            foreach ($cats as $cat):
-                                $sel = ($n['categoria'] ?? '') === $cat ? 'selected' : '';
+                            $cats = [
+                                'Politica'      => 'Política',
+                                'Economia'      => 'Economía',
+                                'Deportes'      => 'Deportes',
+                                'Cultura'       => 'Cultura',
+                                'Sociedad'      => 'Sociedad',
+                                'Tecnologia'    => 'Tecnología',
+                                'Internacional' => 'Internacional',
+                                'Salud'         => 'Salud',
+                                'Religion'      => 'Religión',
+                                'Policial'      => 'Policial'
+                            ];
+                            
+                            // Normalizar categoría actual de la BD (quitar acentos)
+                            $currentCat = $n['categoria'] ?? '';
+                            $normalized = str_replace(['á','é','í','ó','ú'], ['a','e','i','o','u'], mb_strtolower($currentCat));
+                            
+                            foreach ($cats as $slug => $label):
+                                $slugNorm = str_replace(['á','é','í','ó','ú'], ['a','e','i','o','u'], mb_strtolower($slug));
+                                $sel = ($normalized === $slugNorm) ? 'selected' : '';
                             ?>
-                            <option value="<?= $cat ?>" <?= $sel ?>><?= $cat ?></option>
+                            <option value="<?= $slug ?>" <?= $sel ?>><?= $label ?></option>
                             <?php endforeach; ?>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="activo">Estado / Visibilidad</label>
+                        <select id="activo" name="activo" class="form-select">
+                            <option value="1" <?= ($n['activo'] ?? 1) == 1 ? 'selected' : '' ?>>Activo (Visible)</option>
+                            <option value="0" <?= ($n['activo'] ?? 1) == 0 ? 'selected' : '' ?>>Inactivo (Oculto)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;">
+                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                            <input type="checkbox" id="fijada" name="fijada" value="1" <?= ($n['fijada'] ?? 0) == 1 ? 'checked' : '' ?> style="width: 20px; height: 20px; cursor: pointer;">
+                            <label class="form-label" for="fijada" style="margin-bottom: 0; cursor: pointer; color: var(--accent); font-weight: 800; font-size: 0.85rem; text-transform: uppercase;">
+                                <i class="bi bi-pin-angle-fill"></i> Marcar como ÚLTIMA HORA (Hero)
+                            </label>
+                        </div>
+                        
+                        <?php 
+                        $fijadaActual = $this->fijadaActual;
+                        if ($fijadaActual && (!isset($n['id']) || $fijadaActual['id'] != $n['id'])): 
+                        ?>
+                        <div class="alert alert-warning" style="font-size: 0.75rem; padding: 0.5rem; margin-top: 0.5rem;">
+                            <i class="bi bi-info-circle-fill"></i> <strong>Aviso:</strong> La noticia 
+                            <a href="<?= $this->url('admin-noticia/editar', ['id' => $fijadaActual['id']]) ?>" target="_blank" style="text-decoration: underline;">
+                                #<?= $fijadaActual['id'] ?>: "<?= htmlspecialchars(substr($fijadaActual['titulo'], 0, 40)) ?>..."
+                            </a> 
+                            ya está marcada como Última Hora. Si marcas esta, la anterior se desmarcará automáticamente.
+                        </div>
+                        <?php endif; ?>
                     </div>
 
                     <div class="form-group">
@@ -283,29 +330,10 @@ $this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
         const resumen = document.getElementById('resumen').value.trim();
         const content = document.getElementById('contenido').value.trim();
         const img     = document.getElementById('imagen').value.trim();
-        const fbCheck = document.getElementById('post_facebook');
-        const igCheck = document.getElementById('post_instagram');
         
-        const isEdicion = "<?= $esEdicion ?>";
-        let warnings = [];
-
-        // 1. Validar campos básicos (aparte de 'required' de HTML5)
+        // El botón de guardar debe funcionar siempre, las alertas son preventivas
         if (!title || !resumen || !content || !img) {
-            warnings.push("● Hay campos en blanco (Título, Resumen, Contenido o Imagen).");
-        }
-
-        // 2. Validar social media solo si es creación
-        if (!isEdicion) {
-            if ((!fbCheck || !fbCheck.checked) && (!igCheck || !igCheck.checked)) {
-                warnings.push("● No has seleccionado publicar en redes sociales (Facebook/Instagram).");
-            }
-        }
-
-        if (warnings.length > 0) {
-            const msg = "ADVERTENCIA ANTES DE PUBLICAR:\n\n" + 
-                        warnings.join("\n") + 
-                        "\n\n¿Estás seguro de que deseas publicar la noticia con estas condiciones?";
-            return confirm(msg);
+            return confirm("Hay campos que podrían estar vacíos. ¿Deseas Guardar de todas formas?");
         }
 
         return true;
@@ -346,6 +374,20 @@ $this->headTitle($esEdicion ? 'Editar Noticia' : 'Nueva Noticia');
         const el = document.getElementById(id);
         if(el) el.addEventListener('input', updatePreview);
     });
+
+    const fijadaCheck = document.getElementById('fijada');
+    if (fijadaCheck) {
+        fijadaCheck.addEventListener('change', function(e) {
+            <?php if ($this->fijadaActual && (!isset($n['id']) || $this->fijadaActual['id'] != $n['id'])): ?>
+            if (this.checked) {
+                const confirmed = confirm("Ya existe una noticia marcada como ÚLTIMA HORA (#<?= $this->fijadaActual['id'] ?>). Si continúas, la otra dejará de ser destacada automáticamente. ¿Deseas proceder?");
+                if (!confirmed) {
+                    this.checked = false;
+                }
+            }
+            <?php endif; ?>
+        });
+    }
 
     updatePreview();
 </script>

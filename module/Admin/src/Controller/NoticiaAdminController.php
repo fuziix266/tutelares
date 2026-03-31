@@ -31,6 +31,10 @@ class NoticiaAdminController extends AbstractActionController
 
         if ($this->getRequest()->isPost()) {
             $data = (array) $this->getRequest()->getPost();
+            
+            // Garantizar valores booleanos
+            $data['fijada'] = isset($data['fijada']) ? 1 : 0;
+
             if (empty(trim($data['titulo'] ?? ''))) {
                 $error = 'El título es obligatorio.';
             } else {
@@ -39,7 +43,10 @@ class NoticiaAdminController extends AbstractActionController
             }
         }
 
-        $vm = new ViewModel(['error' => $error]);
+        $vm = new ViewModel([
+            'error' => $error,
+            'fijadaActual' => $this->noticiaTable->getUltimaHora()
+        ]);
         $vm->setTemplate('admin/noticia/form');
         $this->layout('layout/admin');
         return $vm;
@@ -58,15 +65,28 @@ class NoticiaAdminController extends AbstractActionController
 
         if ($this->getRequest()->isPost()) {
             $data = (array) $this->getRequest()->getPost();
+
+            // Garantizar valores booleanos
+            $data['fijada'] = isset($data['fijada']) ? 1 : 0;
+
             if (empty(trim($data['titulo'] ?? ''))) {
                 $error = 'El título es obligatorio.';
             } else {
                 $this->noticiaTable->update($id, $data);
-                return $this->redirect()->toRoute('admin-noticia');
+                
+                // Redirección inteligente basada en el rol del usuario
+                if (session_status() === PHP_SESSION_NONE) session_start();
+                $route = (($_SESSION['admin_role'] ?? '') === 'publisher') ? 'admin-publisher' : 'admin-noticia';
+                
+                return $this->redirect()->toRoute($route);
             }
         }
 
-        $vm = new ViewModel(['noticia' => $noticia, 'error' => $error]);
+        $vm = new ViewModel([
+            'noticia' => $noticia, 
+            'error' => $error,
+            'fijadaActual' => $this->noticiaTable->getUltimaHora()
+        ]);
         $vm->setTemplate('admin/noticia/form');
         $this->layout('layout/admin');
         return $vm;

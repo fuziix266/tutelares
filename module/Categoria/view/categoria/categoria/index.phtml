@@ -2,30 +2,134 @@
 <div class="section container">
     <div class="section-header">
         <h2>Noticias de: <?= $this->escapeHtml($categoria) ?></h2>
+        <a href="<?= $this->url('categoria') ?>" class="section-link">Todas las categorías <i class="bi bi-arrow-right"></i></a>
     </div>
-    <div class="row">
+
+    <div class="news-list-horizontal">
         <?php foreach ($noticias as $n): ?>
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 shadow-sm border-0">
-                    <?php if ($n['imagen']): ?>
-                        <img src="/img/noticias/<?= $n['imagen'] ?>" class="card-img-top news-img-cat" alt="<?= $n['titulo'] ?>">
+            <a href="<?= $this->url('noticia/ver', ['id' => $n['id']]) ?>" class="news-list-item">
+                <div class="news-list-img" style="position: relative;">
+                    <img src="<?= htmlspecialchars($n['imagen'] ?: 'https://via.placeholder.com/400x300?text=Tutelares') ?>" alt="<?= htmlspecialchars($n['titulo']) ?>">
+                    <?php if (($n['fijada'] ?? 0) == 1): ?>
+                        <span style="position:absolute;bottom:10px;left:10px;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:800;padding:2px 6px;border-radius:4px;text-transform:uppercase;">
+                            <i class="bi bi-lightning-charge-fill"></i> Última Hora
+                        </span>
                     <?php endif; ?>
-                    <div class="card-body">
-                        <span class="badge bg-secondary mb-2"><?= $n['categoria'] ?></span>
-                        <h5 class="card-title"><?= $this->escapeHtml($n['titulo'] ?? '') ?></h5>
-                        <p class="card-text text-muted small"><?= $this->escapeHtml($n['resumen'] ?? '') ?></p>
+                </div>
+                <div class="news-list-content">
+                    <span class="news-list-cat"><?= htmlspecialchars($n['categoria']) ?></span>
+                    <h3 class="news-list-title"><?= htmlspecialchars($n['titulo']) ?></h3>
+                    <p class="news-list-excerpt"><?= htmlspecialchars($n['resumen'] ?: substr(strip_tags($n['contenido'] ?? ''), 0, 180)) ?></p>
+                    <div class="news-list-meta">
+                        <span><i class="bi bi-person"></i> <?= htmlspecialchars($n['autor'] ?: 'Redacción') ?></span>
+                        <span class="sep">•</span>
+                        <span><?= date('d/m/Y', strtotime($n['creado_en'])) ?></span>
                     </div>
                 </div>
-            </div>
+            </a>
         <?php endforeach; ?>
+
         <?php if (empty($noticias)): ?>
-            <div class="col-12 text-center p-5">
-                <p class="text-muted">No hay noticias en esta categoría aún.</p>
-                <a href="/categoria" class="btn btn-outline-primary">Volver a Categorías</a>
+            <div class="empty-state">
+                <p>Aún no hay noticias en esta categoría.</p>
+                <a href="/categoria" class="btn-back">Ver otras categorías</a>
             </div>
         <?php endif; ?>
     </div>
 </div>
+
+<style>
+/* ── HORIZONTAL NEWS LIST STYLES ── */
+.news-list-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.news-list-item {
+    display: flex;
+    gap: 2rem;
+    background: #fff;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    transition: all 0.2s ease;
+}
+
+.news-list-item:last-child { border-bottom: none; }
+.news-list-item:hover { opacity: 0.8; }
+
+.news-list-img {
+    flex: 0 0 300px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.news-list-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.news-list-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.news-list-cat {
+    color: var(--accent);
+    font-weight: 800;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.news-list-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--black);
+}
+
+.news-list-excerpt {
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+}
+
+.news-list-meta {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #999;
+}
+
+.news-list-meta .sep { margin: 0 0.5rem; }
+
+.empty-state {
+    text-align: center;
+    padding: 5rem 0;
+}
+
+.btn-back {
+    display: inline-block;
+    margin-top: 1rem;
+    background: var(--black);
+    color: #fff;
+    padding: 0.75rem 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .news-list-item { flex-direction: column; gap: 1rem; }
+    .news-list-img { flex: none; width: 100%; height: 250px; }
+}
+</style>
 <?php else: ?>
 <div class="section container">
     <div class="section-header">

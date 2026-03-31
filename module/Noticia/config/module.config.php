@@ -12,6 +12,17 @@ return [
                     'route'    => '/noticia',
                     'defaults' => ['controller' => Controller\NoticiaController::class, 'action' => 'index'],
                 ],
+                'may_terminate' => true,
+                'child_routes'  => [
+                    'ver' => [
+                        'type'    => Segment::class,
+                        'options' => [
+                            'route'    => '/ver/:id',
+                            'constraints' => ['id' => '[0-9]+'],
+                            'defaults' => ['action' => 'ver'],
+                        ],
+                    ],
+                ],
             ],
         ],
     ],

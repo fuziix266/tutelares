@@ -8,10 +8,15 @@ $noticias = $this->noticias ?? [];
     <div class="news-grid">
         <?php if (count($noticias) > 0): ?>
             <?php foreach ($noticias as $n): ?>
-            <article class="news-card">
+            <a href="<?= $this->url('noticia/ver', ['id' => $n['id']]) ?>" class="news-card">
                 <div class="news-card-img">
                     <img src="<?= htmlspecialchars($n['imagen'] ?: 'https://via.placeholder.com/600x400?text=Tutelares') ?>" alt="<?= htmlspecialchars($n['titulo']) ?>" loading="lazy">
                     <span class="news-card-cat"><?= htmlspecialchars($n['categoria']) ?></span>
+                    <?php if (($n['fijada'] ?? 0) == 1): ?>
+                        <span style="position:absolute;bottom:10px;left:10px;background:var(--accent);color:#fff;font-size:0.65rem;font-weight:800;padding:2px 6px;border-radius:4px;text-transform:uppercase;">
+                            <i class="bi bi-lightning-charge-fill"></i> Última Hora
+                        </span>
+                    <?php endif; ?>
                 </div>
                 <div class="news-card-body">
                     <h3 class="news-card-title"><?= htmlspecialchars($n['titulo']) ?></h3>
@@ -21,7 +26,7 @@ $noticias = $this->noticias ?? [];
                         <span><i class="bi bi-clock"></i> <?= date('d/m/Y', strtotime($n['creado_en'])) ?></span>
                     </div>
                 </div>
-            </article>
+            </a>
             <?php endforeach; ?>
         <?php else: ?>
             <p>Aún no hay noticias publicadas.</p>

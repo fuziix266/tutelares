@@ -19,9 +19,23 @@ class CategoriaController extends AbstractActionController
             return new ViewModel();
         }
 
+        $labels = [
+            'Politica'      => 'Política',
+            'Economia'      => 'Economía',
+            'Deportes'      => 'Deportes',
+            'Tecnologia'    => 'Tecnología',
+            'Cultura'       => 'Cultura',
+            'Sociedad'      => 'Sociedad',
+            'Internacional' => 'Internacional',
+            'Salud'         => 'Salud',
+            'Religion'      => 'Religión',
+            'Policial'      => 'Policial'
+        ];
+        $nombre = $labels[$id] ?? $id;
+
         $noticias = $this->table->fetchByCategory($id);
         return new ViewModel([
-            'categoria' => $id,
+            'categoria' => $nombre,
             'noticias' => $noticias
         ]);
     }
